@@ -16,7 +16,7 @@ class HouseholdIndexView(APIView):
             return Response(status=status.HTTP_404_NOT_FOUND)
         return Response(serialized_hh.data, status=status.HTTP_200_OK)
 
-    def post(self, request, pk):
+    def post(self, request):
         try:
             household = HouseholdSerializer(data=request.data)
         except:
@@ -33,8 +33,8 @@ class HouseholdDetailView(APIView):
 
     def delete(self, request, pk):
         try:
-            household = House.objects.get(id=pk)
-            house.delete()
+            household = Household.objects.get(id=pk)
+            household.delete()
         except:
             return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         return Response(status=status.HTTP_204_NO_CONTENT)
