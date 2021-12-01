@@ -4,4 +4,5 @@ from .views import HouseholdIndexView, HouseholdDetailView
 urlpatterns = [
     path('<int:pk>/', HouseholdDetailView.as_view()),
     path('', HouseholdIndexView.as_view()),
-]
+    ]
+
