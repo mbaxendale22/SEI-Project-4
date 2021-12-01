@@ -5,7 +5,7 @@ class Personal_Assets(models.Model):
     PA_CHOICES = (
         ('savings', 'savings'),
         ('stocks', 'stocks'),
-        ('cypto', 'cypto'),
+        ('crypto', 'crypto'),
         ('other', 'other'),
     )
     name = models.CharField(max_length=100)

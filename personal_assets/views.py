@@ -13,7 +13,7 @@ class PAIndexView(APIView):
     def get(self, request):
         try: 
             pa = Personal_Assets.objects.all()
-            serialized_pa = PASerializer(pe, many=True)
+            serialized_pa = PASerializer(pa, many=True)
         except:
             return Response(status=status.HTTP_404_NOT_FOUND)
         return Response(serialized_pa.data, status=status.HTTP_200_OK)
@@ -43,8 +43,8 @@ class PADetailView(APIView):
 
     def put(self, request, pk):
         try:
-            pa = Personal_Expenses.objects.get(id=pk)
-            updated_pa = PESerializer(pa, data=request.data)
+            pa = Personal_Assets.objects.get(id=pk)
+            updated_pa = PASerializer(pa, data=request.data)
         except:
             return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         if updated_pa.is_valid():
