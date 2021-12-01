@@ -9,7 +9,7 @@ class Personal_Assets(models.Model):
         ('other', 'other'),
     )
     name = models.CharField(max_length=100)
-    category = models.CharField(max_length=20, choices=PE_CHOICES) 
+    category = models.CharField(max_length=20, choices=PA_CHOICES) 
     amount = models.DecimalField(max_digits=10, decimal_places=2)
     date = models.DateField(auto_now=False, auto_now_add=False)
     share = models.BooleanField(default=False, verbose_name='share with household')
