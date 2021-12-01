@@ -54,8 +54,6 @@ class PEDetailView(APIView):
         else: 
             return Response(updated_pe.errors, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
 
-
-
     def get(self, request, pk):
         try:
             household = Personal_Expenses.objects.get(id=pk)
