@@ -63,6 +63,41 @@ class SEIndexView(APIView):
             if shared_personal_expense.is_valid():
                 shared_personal_expense.save()
 
+        return Response(status=status.HTTP_201_CREATED)
 
-        return Response({"message": "congrats you hit the endpoint"})
 
+
+class SEDetailView(APIView):
+
+    def delete(self, request, pk):
+        try:
+        #    house_members = User.objects.filter(household=request.data['household']).exclude(id=request.data['creator']) # grab the other members of the household from the User model, exlude the current user from the list 
+            pe = Personal_Expenses.objects.get(id=pk)
+
+            household = Household_Expenses.objects.filter(
+            creator=request.data['creator'],
+            name=request.data['name'],
+            category=request.data['category'], 
+            date=request.data['date'],
+            household=request.data['household']
+            )
+            
+
+            pse = Personal_Expenses.objects.filter(
+            creator=request.data['creator'],
+            name=request.data['name'],
+            category=request.data['category'], 
+            date=request.data['date']
+            )
+            print(pse)
+
+
+            pe.delete()
+            pse.delete()
+            household.delete()
+
+
+
+        except:
+            return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        return Response(status=status.HTTP_204_NO_CONTENT)
