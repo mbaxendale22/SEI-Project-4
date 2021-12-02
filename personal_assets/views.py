@@ -6,7 +6,25 @@ from rest_framework.response import Response
 from rest_framework import status 
 from .models import Personal_Assets
 from .serializers import PASerializer
+from household_assets.models import Household_Assets
+from household_assets.serializers import HASerializer
+from auth_jwt.models import User
+from auth_jwt.serializers import UserSerializer
 
+class PASharedView(APIView):
+    def post(self, request):
+            house = User.objects.filter(id=request.data['user']).values()
+            household = (house[0]['household_id'])
+            asset = {
+                "name": request.data['name'],
+                "category": request.data['category'],
+                "amount": request.data['amount'],
+                "date": request.data['date'],
+                "household": household,
+                "owner": request.data['user']
+            }
+
+            return Response(personal_shared_assets, status=status.HTTP_200_OK)
 
 
 class PAIndexView(APIView):

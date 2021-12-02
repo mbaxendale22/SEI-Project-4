@@ -13,6 +13,7 @@ class Household_Assets(models.Model):
     amount = models.DecimalField(max_digits=10, decimal_places=2)
     date = models.DateField(auto_now=False, auto_now_add=False)
     household = models.ForeignKey("household.Household", on_delete=models.CASCADE)
+    owner = models.ForeignKey("auth_jwt.User", on_delete=models.CASCADE)
 
     def __str__(self):
         return self.name

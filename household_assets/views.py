@@ -4,6 +4,7 @@ from rest_framework.response import Response
 from rest_framework import status 
 from .models import Household_Assets
 from .serializers import HASerializer
+from auth_jwt.models import User
 
 
 
@@ -18,7 +19,20 @@ class HAIndexView(APIView):
 
     def post(self, request):
         try:
-            ha = HASerializer(data=request.data)
+            print('hitting the correct view')
+            house = User.objects.filter(id=request.data['user']).values()
+            household = (house[0]['household_id'])
+            print(household)
+            asset = {
+                "name": request.data['name'],
+                "category": request.data['category'],
+                "amount": request.data['amount'],
+                "date": request.data['date'],
+                "household": household,
+                "owner": request.data['user']
+            }
+            print(asset)
+            ha = HASerializer(data=asset)
         except:
             return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         if ha.is_valid():
