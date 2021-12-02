@@ -12,9 +12,9 @@ from household_expenses.models import Household_Expenses
 
 
 class SEIndexView(APIView):
-    
+
     def post(self, request):
-        house_members = User.objects.filter(household=request.data['household']).exclude(id=request.data['user']) # grab the other members of the household from the User model, exlude the current user from the list
+        house_members = User.objects.filter(household=request.data['household']).exclude(id=request.data['creator']) # grab the other members of the household from the User model, exlude the current user from the list
         serialized_house_members = UserSerializer(house_members, many=True)
         h_list = list(serialized_house_members.data) #return the query as a list, will use for looping through later 
         shared_amount = (request.data['amount'] / (len(h_list) + 1)) #calc the correct splitting of the expense including the user who shared it
@@ -27,7 +27,8 @@ class SEIndexView(APIView):
         "date": request.data['date'],
         "share": request.data['share'],
         "resolved": request.data['resolved'],
-        "user": request.data['user'],
+        "owner": request.data['owner'],
+        "creator": request.data['creator']
         }
 
         he = {
@@ -37,6 +38,7 @@ class SEIndexView(APIView):
             "date": request.data['date'],
             "resolved": request.data['resolved'],
             "household": request.data['household'],
+            "creator": request.data['creator']
         }
         personal_expense = PESerializer(data=pe)
         if personal_expense.is_valid():
@@ -54,7 +56,8 @@ class SEIndexView(APIView):
                 "date": request.data['date'],
                 "share": request.data['share'],
                 "resolved": request.data['resolved'],
-                "user": h_list[index]['id'],
+                "owner": h_list[index]['id'],
+                "creator": request.data['creator'],
             } 
             shared_personal_expense = PESerializer(data=pse)
             if shared_personal_expense.is_valid():

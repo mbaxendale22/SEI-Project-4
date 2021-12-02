@@ -18,7 +18,7 @@ class Household_Expenses(models.Model):
     date = models.DateField(auto_now=False, auto_now_add=False)
     resolved = models.BooleanField(default=False, verbose_name='shared bill resolved')
     household = models.ForeignKey("household.Household", on_delete=models.CASCADE)
-    user = models.ForeignKey("auth_jwt.User", on_delete=models.CASCADE)
+    creator = models.ForeignKey("auth_jwt.User", on_delete=models.CASCADE)
 
     def __str__(self):
         return self.name
