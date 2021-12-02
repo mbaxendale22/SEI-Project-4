@@ -24,4 +24,5 @@ urlpatterns = [
     path('api/personal-assets/', include('personal_assets.urls')),
     path('api/household-expenses/', include('household_expenses.urls')),
     path('api/household-assets/', include('household_assets.urls')),
+    path('api/shared-expenses/', include('shared_expenses.urls')),
 ]
