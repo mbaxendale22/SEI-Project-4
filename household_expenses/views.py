@@ -57,7 +57,7 @@ class HEDetailView(APIView):
     def get(self, request, pk):
         try:
             he = Household_Expenses.objects.get(id=pk)
-            serialized_hh = HESerializer(he)
+            serialized_he = HESerializer(he)
         except:
             return Response(status=status.HTTP_404_NOT_FOUND)
         return Response(serialized_he.data, status=status.HTTP_200_OK)
