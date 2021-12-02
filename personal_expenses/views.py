@@ -7,35 +7,68 @@ from rest_framework.response import Response
 from rest_framework import status 
 from .models import Personal_Expenses
 from household_expenses.models import Household_Expenses
+from auth_jwt.models import User
+from auth_jwt.serializers import UserSerializer
 from .serializers import PESerializer
 from household_expenses.serializers import HESerializer
  
 
 
 class PEShareView(APIView):
-    def get(self, request):
-        # post the expense to user's expenses
-        # find the other members of the user's household'
+    def post(self, request):
+        house_members = User.objects.filter(household=request.data['household']).exclude(id=request.data['user'])
+        serialized_house_members = UserSerializer(house_members, many=True)
+        h_list = list(serialized_house_members.data)
+        shared_amount = (request.data['amount'] / (len(h_list) + 1)) 
+        print(h_list[0])
+
+
         pe = {
         "name": request.data['name'],
         "category":request.data['category'],
-        "amount": request.data['amount'],
+        "amount": shared_amount,
         "date": request.data['date'],
         "share": request.data['share'],
         "resolved": request.data['resolved'],
-        "user": request.data['user_id'],
+        "user": request.data['user'],
         }
-        hh = {
+
+        he = {
             "name": request.data['name'],
             "category":request.data['category'],
             "amount": request.data['amount'],
-            "date": request.data['data'],
+            "date": request.data['date'],
             "resolved": request.data['resolved'],
-            "household": request.data['household_id'],
+            "household": request.data['household'],
         }
-        personal_expense = PESerializer(pe)
-        household_expense = HESerializer(hh)
+        personal_expense = PESerializer(data=pe)
+        if personal_expense.is_valid():
+            personal_expense.save()
+        household_expense = HESerializer(data=he)
+        if household_expense.is_valid():
+            household_expense.save()
+
+        for index, person in enumerate(h_list):
+            pse = {
+            "name": request.data['name'],
+            "category":request.data['category'],
+            "amount": shared_amount,
+            "date": request.data['date'],
+            "share": request.data['share'],
+            "resolved": request.data['resolved'],
+            "user": h_list[index]['id'],
+            } 
+            shared_personal_expense = PESerializer(data=pse)
+            if shared_personal_expense.is_valid():
+                shared_personal_expense.save()
+
+
         return Response({"message": "congrats you hit the endpoint"})
+
+
+
+
+
 
 class PEIndexView(APIView):
     def get(self, request):
@@ -49,7 +82,6 @@ class PEIndexView(APIView):
     def post(self, request):
         try:
             pe = PESerializer(data=request.data)
-            # print(request.data['amount'])
         except:
             return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         if pe.is_valid():
