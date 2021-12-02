@@ -20,7 +20,6 @@ class PEShareView(APIView):
         serialized_house_members = UserSerializer(house_members, many=True)
         h_list = list(serialized_house_members.data)
         shared_amount = (request.data['amount'] / (len(h_list) + 1)) 
-        print(h_list[0])
 
 
         pe = {
