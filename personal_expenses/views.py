@@ -6,9 +6,36 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status 
 from .models import Personal_Expenses
+from household_expenses.models import Household_Expenses
 from .serializers import PESerializer
+from household_expenses.serializers import HESerializer
+ 
 
 
+class PEShareView(APIView):
+    def get(self, request):
+        # post the expense to user's expenses
+        # find the other members of the user's household'
+        pe = {
+        "name": request.data['name'],
+        "category":request.data['category'],
+        "amount": request.data['amount'],
+        "date": request.data['date'],
+        "share": request.data['share'],
+        "resolved": request.data['resolved'],
+        "user": request.data['user_id'],
+        }
+        hh = {
+            "name": request.data['name'],
+            "category":request.data['category'],
+            "amount": request.data['amount'],
+            "date": request.data['data'],
+            "resolved": request.data['resolved'],
+            "household": request.data['household_id'],
+        }
+        personal_expense = PESerializer(pe)
+        household_expense = HESerializer(hh)
+        return Response({"message": "congrats you hit the endpoint"})
 
 class PEIndexView(APIView):
     def get(self, request):
@@ -22,6 +49,7 @@ class PEIndexView(APIView):
     def post(self, request):
         try:
             pe = PESerializer(data=request.data)
+            # print(request.data['amount'])
         except:
             return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         if pe.is_valid():
@@ -56,8 +84,8 @@ class PEDetailView(APIView):
 
     def get(self, request, pk):
         try:
-            household = Personal_Expenses.objects.get(id=pk)
-            serialized_hh = PESerializer(household)
+            pe = Personal_Expenses.objects.get(id=pk)
+            serialized_pe = PESerializer(pe)
         except:
             return Response(status=status.HTTP_404_NOT_FOUND)
-        return Response(serialized_hh.data, status=status.HTTP_200_OK)
+        return Response(serialized_pe.data, status=status.HTTP_200_OK)
