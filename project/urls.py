@@ -23,5 +23,5 @@ urlpatterns = [
     path('api/personal-expenses/', include('personal_expenses.urls')),
     path('api/personal-assets/', include('personal_assets.urls')),
     path('api/household-expenses/', include('household_expenses.urls')),
-    # path('api/household-assets/', include('household_assets.urls')),
+    path('api/household-assets/', include('household_assets.urls')),
 ]

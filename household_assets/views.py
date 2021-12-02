@@ -54,7 +54,7 @@ class HADetailView(APIView):
     def get(self, request, pk):
         try:
             ha = Household_Assets.objects.get(id=pk)
-            serialized_ha = HASerializer(household)
+            serialized_ha = HASerializer(ha)
         except:
             return Response(status=status.HTTP_404_NOT_FOUND)
         return Response(serialized_ha.data, status=status.HTTP_200_OK)
