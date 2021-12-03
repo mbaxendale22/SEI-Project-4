@@ -41,8 +41,6 @@ class HAIndexView(APIView):
         else: 
             return Response(ha.errors, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
 
-
-
 class HADetailView(APIView):
 
     def delete(self, request, pk):

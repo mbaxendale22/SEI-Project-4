@@ -7,6 +7,7 @@ from rest_framework.response import Response
 from rest_framework import status 
 from .models import Personal_Expenses
 from .serializers import PESerializer
+from functools import reduce
 
 
 
@@ -61,3 +62,59 @@ class PEDetailView(APIView):
         except:
             return Response(status=status.HTTP_404_NOT_FOUND)
         return Response(serialized_pe.data, status=status.HTTP_200_OK)
+
+# Return all transactions ordered from most recent
+class PERecentView(APIView):
+    def get(self, request, own):
+        try:
+            pe = Personal_Expenses.objects.filter(owner=own).order_by('-date')
+            serialized_pe = PESerializer(pe, many=True)
+            print(serialized_pe)
+        except:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        return Response(serialized_pe.data, status=status.HTTP_200_OK)
+
+# Return all transactions from any date range specified in as query parameters in the url
+class PELastMonth(APIView):
+    def get(self, request):
+        try:
+            start = request.GET.get('start')
+            end = request.GET.get('end')
+            pe = Personal_Expenses.objects.filter(date__gte=str(start), date__lte=str(end))
+            print(pe)
+            serialized_pe = PESerializer(pe, many=True)
+            print(serialized_pe)
+        except:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        return Response(serialized_pe.data, status=status.HTTP_200_OK)
+
+# Return the total value of transactions from any date range specified in as query parameters in the url
+class PEMonthlyTotal(APIView):
+    def get(self, request):
+        try:
+            start = request.GET.get('start')
+            end = request.GET.get('end')
+            pe = Personal_Expenses.objects.filter(date__gte=str(start), date__lte=str(end)).values()
+            amounts = []
+            for transaction in pe:
+                amounts.append(transaction['amount'])
+            total = reduce((lambda x, y: x + y), amounts)
+        except:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        return Response(total, status=status.HTTP_200_OK)
+
+# Return the largest transaction from any date range
+class PELargestExpense(APIView):
+    def get(self, request):
+        try:
+            start = request.GET.get('start')
+            end = request.GET.get('end')
+            pe = Personal_Expenses.objects.filter(date__gte=str(start), date__lte=str(end)).order_by('amount')
+            print(pe)
+            serialized_pe = PESerializer(pe, many=True)
+            print(serialized_pe)
+        except:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        return Response(serialized_pe.data, status=status.HTTP_200_OK)
+
+# Total this month
