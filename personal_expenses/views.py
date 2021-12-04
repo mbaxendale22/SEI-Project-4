@@ -78,7 +78,8 @@ class PELastMonth(APIView):
         try:
             start = request.GET.get('start')
             end = request.GET.get('end')
-            pe = Personal_Expenses.objects.filter(date__gte=str(start), date__lte=str(end))
+            owner = request.GET.get('owner')
+            pe = Personal_Expenses.objects.filter(owner=owner).filter(date__gte=str(start), date__lte=str(end)).order_by('-date')
             serialized_pe = PESerializer(pe, many=True)
         except:
             return Response(status=status.HTTP_404_NOT_FOUND)
@@ -90,7 +91,8 @@ class PEMonthlyTotal(APIView):
         try:
             start = request.GET.get('start')
             end = request.GET.get('end')
-            pe = Personal_Expenses.objects.filter(date__gte=str(start), date__lte=str(end)).values()
+            owner = request.GET.get('owner')
+            pe = Personal_Expenses.objects.filter(owner=owner).filter(date__gte=str(start), date__lte=str(end)).values()
             amounts = []
             for transaction in pe:
                 amounts.append(transaction['amount'])
@@ -105,7 +107,8 @@ class PELargestExpense(APIView):
         try:
             start = request.GET.get('start')
             end = request.GET.get('end')
-            pe = Personal_Expenses.objects.filter(date__gte=str(start), date__lte=str(end)).order_by('amount')
+            owner = request.GET.get('owner')
+            pe = Personal_Expenses.objects.filter(owner=owner).filter(date__gte=str(start), date__lte=str(end)).order_by('-amount')
             print(pe)
             serialized_pe = PESerializer(pe, many=True)
             print(serialized_pe)
