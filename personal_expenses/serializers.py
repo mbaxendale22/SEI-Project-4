@@ -7,4 +7,3 @@ class PESerializer(serializers.ModelSerializer):
         model = Personal_Expenses
         fields = '__all__'
 
-

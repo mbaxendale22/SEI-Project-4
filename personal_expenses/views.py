@@ -9,7 +9,7 @@ from .models import Personal_Expenses
 from .serializers import PESerializer
 from functools import reduce
 
-
+ 
 
 class PEIndexView(APIView):
     def get(self, request):
@@ -109,9 +109,48 @@ class PELargestExpense(APIView):
             end = request.GET.get('end')
             owner = request.GET.get('owner')
             pe = Personal_Expenses.objects.filter(owner=owner).filter(date__gte=str(start), date__lte=str(end)).order_by('-amount')
-            print(pe)
             serialized_pe = PESerializer(pe, many=True)
-            print(serialized_pe)
         except:
             return Response(status=status.HTTP_404_NOT_FOUND)
         return Response(serialized_pe.data, status=status.HTTP_200_OK)
+
+class PESpendingByCategory(APIView):
+
+    def get(self, request):
+        try:
+            start = request.GET.get('start')
+            end = request.GET.get('end')
+            owner = request.GET.get('owner')
+            pe = Personal_Expenses.objects.filter(owner=owner).filter(date__gte=str(start), date__lte=str(end)).order_by('-date').values()
+
+            transport = list(filter(lambda x: x.get('category') == 'transport', pe ))
+            entertainment = list(filter(lambda x: x.get('category') == 'entertainment', pe ))
+            dining = list(filter(lambda x: x.get('category') == 'dining', pe ))
+            grocery = list(filter(lambda x: x.get('category') == 'grocery', pe ))
+            travel = list(filter(lambda x: x.get('category') == 'travel', pe ))
+            retail = list(filter(lambda x: x.get('category') == 'retail', pe ))
+            bills = list(filter(lambda x: x.get('category') == 'bills', pe ))
+            general = list(filter(lambda x: x.get('category') == 'general', pe ))
+
+            categories = [transport, entertainment, dining, grocery, travel, retail, bills, general]
+            test = {}
+        
+            def get_amounts(category):
+                if len(category) == 0:
+                    pass
+                else:
+                    category_name = ''
+                    category_total = []
+                    for cost in category:
+                        category_total.append(cost['amount'])
+                        category_name = cost['category']
+                    final = reduce(lambda x, y: x + y, category_total)
+                    test[category_name] = final
+                  
+            
+            for choice in categories:
+                get_amounts(choice)
+            # serialized_pe = PESerializer(pe, many=True)
+        except:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        return Response(test, status=status.HTTP_200_OK)
