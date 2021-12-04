@@ -7,6 +7,7 @@ from rest_framework.response import Response
 from rest_framework import status 
 from .models import Household_Expenses
 from .serializers import HESerializer
+from functools import reduce
 
 
 
@@ -58,6 +59,57 @@ class HEDetailView(APIView):
         try:
             he = Household_Expenses.objects.get(id=pk)
             serialized_he = HESerializer(he)
+        except:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        return Response(serialized_he.data, status=status.HTTP_200_OK)
+
+        # Return all transactions ordered from most recent
+class HERecentView(APIView):
+    def get(self, request, house):
+        try:
+            he = Household_Expenses.objects.filter(household=house).order_by('-date')
+            serialized_he = HESerializer(he, many=True)
+        except:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        return Response(serialized_he.data, status=status.HTTP_200_OK)
+
+# Return all transactions from any date range specified in as query parameters in the url
+class HELastMonth(APIView):
+    def get(self, request):
+        try:
+            start = request.GET.get('start')
+            end = request.GET.get('end')
+            he = Household_Expenses.objects.filter(date__gte=str(start), date__lte=str(end))
+            print(he)
+            serialized_he = HESerializer(he, many=True)
+        except:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        return Response(serialized_he.data, status=status.HTTP_200_OK)
+
+# Return the total value of transactions from any date range specified in as query parameters in the url
+class HEMonthlyTotal(APIView):
+    def get(self, request):
+        try:
+            start = request.GET.get('start')
+            end = request.GET.get('end')
+            he = Household_Expenses.objects.filter(date__gte=str(start), date__lte=str(end)).values()
+            amounts = []
+            for transaction in he:
+                amounts.append(transaction['amount'])
+                print(transaction['amount'])
+            total = reduce((lambda x, y: x + y), amounts)
+        except:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        return Response(total, status=status.HTTP_200_OK)
+
+# Return the largest transaction from any date range
+class HELargestExpense(APIView):
+    def get(self, request):
+        try:
+            start = request.GET.get('start')
+            end = request.GET.get('end')
+            he = Household_Expenses.objects.filter(date__gte=str(start), date__lte=str(end)).order_by('-amount')
+            serialized_he =HESerializer(he, many=True)
         except:
             return Response(status=status.HTTP_404_NOT_FOUND)
         return Response(serialized_he.data, status=status.HTTP_200_OK)

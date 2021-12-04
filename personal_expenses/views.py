@@ -31,8 +31,6 @@ class PEIndexView(APIView):
         else: 
             return Response(pe.errors, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
 
-
-
 class PEDetailView(APIView):
 
     def delete(self, request, pk):
@@ -81,9 +79,7 @@ class PELastMonth(APIView):
             start = request.GET.get('start')
             end = request.GET.get('end')
             pe = Personal_Expenses.objects.filter(date__gte=str(start), date__lte=str(end))
-            print(pe)
             serialized_pe = PESerializer(pe, many=True)
-            print(serialized_pe)
         except:
             return Response(status=status.HTTP_404_NOT_FOUND)
         return Response(serialized_pe.data, status=status.HTTP_200_OK)
@@ -116,5 +112,3 @@ class PELargestExpense(APIView):
         except:
             return Response(status=status.HTTP_404_NOT_FOUND)
         return Response(serialized_pe.data, status=status.HTTP_200_OK)
-
-# Total this month
