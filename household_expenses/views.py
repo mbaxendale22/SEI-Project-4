@@ -117,3 +117,45 @@ class HELargestExpense(APIView):
             return Response(status=status.HTTP_404_NOT_FOUND)
         return Response(serialized_he.data, status=status.HTTP_200_OK)
 
+# grabs all expenses within a specified date range, totals each category of spending and returns it in a single dict
+class HESpendingByCategory(APIView):
+
+    def get(self, request):
+        try:
+            start = request.GET.get('start')
+            end = request.GET.get('end')
+            house = request.GET.get('house')
+            he = Household_Expenses.objects.filter(household=house).filter(date__gte=str(start), date__lte=str(end)).order_by('-date').values()
+
+            transport = list(filter(lambda x: x.get('category') == 'transport', he ))
+            entertainment = list(filter(lambda x: x.get('category') == 'entertainment', he ))
+            dining = list(filter(lambda x: x.get('category') == 'dining', he ))
+            grocery = list(filter(lambda x: x.get('category') == 'grocery', he ))
+            travel = list(filter(lambda x: x.get('category') == 'travel', he ))
+            retail = list(filter(lambda x: x.get('category') == 'retail', he ))
+            bills = list(filter(lambda x: x.get('category') == 'bills', he ))
+            general = list(filter(lambda x: x.get('category') == 'general', he ))
+
+            categories = [transport, entertainment, dining, grocery, travel, retail, bills, general]
+            final_totals = {}
+        
+            def get_amounts(category):
+                if len(category) == 0:
+                    pass
+                else:
+                    category_name = ''
+                    category_total = []
+                    for cost in category:
+                        category_total.append(cost['amount'])
+                        category_name = cost['category']
+                    final = reduce(lambda x, y: x + y, category_total)
+                    final_totals[category_name] = final
+                  
+            
+            for choice in categories:
+                get_amounts(choice)
+
+        except:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        return Response(final_totals, status=status.HTTP_200_OK)
+

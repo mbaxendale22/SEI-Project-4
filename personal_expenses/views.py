@@ -133,7 +133,7 @@ class PESpendingByCategory(APIView):
             general = list(filter(lambda x: x.get('category') == 'general', pe ))
 
             categories = [transport, entertainment, dining, grocery, travel, retail, bills, general]
-            test = {}
+            total_amount= {}
         
             def get_amounts(category):
                 if len(category) == 0:
@@ -145,12 +145,12 @@ class PESpendingByCategory(APIView):
                         category_total.append(cost['amount'])
                         category_name = cost['category']
                     final = reduce(lambda x, y: x + y, category_total)
-                    test[category_name] = final
+                    total_amount[category_name] = final
                   
             
             for choice in categories:
                 get_amounts(choice)
-            # serialized_pe = PESerializer(pe, many=True)
+
         except:
             return Response(status=status.HTTP_404_NOT_FOUND)
-        return Response(test, status=status.HTTP_200_OK)
+        return Response(total_amount, status=status.HTTP_200_OK)
