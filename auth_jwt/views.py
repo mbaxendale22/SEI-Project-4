@@ -18,7 +18,6 @@ class UserIndexView(APIView):
         print('hitting the correct view')
         try: 
             user = User.objects.all()
-            print(user)
             serialized_user = UserSerializer(user, many=True)
         except:
             return Response(status=status.HTTP_404_NOT_FOUND)
@@ -87,13 +86,10 @@ class LoginView(APIView):
             raise PermissionDenied({'message': 'Invalid credentials'})
 
     def post(self, request):
-        print("********** hitting the correct view")
         email = request.data.get('email')
         password = request.data.get('password')
-        print(password)
 
         user = self.get_user(email)
-        print(user)
         if not user.check_password(password):
             raise PermissionDenied({'message': 'Invalid credentials'})
 
