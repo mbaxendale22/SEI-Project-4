@@ -4,6 +4,7 @@ from rest_framework.response import Response
 from rest_framework import status 
 from .models import Personal_Income
 from .serializers import PISerializer
+from functools import reduce
 
 
 
@@ -60,3 +61,59 @@ class PIDetailView(APIView):
         except:
             return Response(status=status.HTTP_404_NOT_FOUND)
         return Response(serialized_pi.data, status=status.HTTP_200_OK)
+
+
+class PIRecentView(APIView):
+    def get(self, request, user):
+        try:
+            pi = Personal_Income.objects.filter(user=user).order_by('-date')
+            serialized_pi = PISerializer(pi, many=True)
+        except:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        return Response(serialized_pi.data, status=status.HTTP_200_OK)
+
+# Return all transactions from any date range specified in as query parameters in the url
+class PILastMonth(APIView):
+    def get(self, request):
+        print('hitting the correct view')
+        try:
+            start = request.GET.get('start')
+            end = request.GET.get('end')
+            user = request.GET.get('user')
+            pi = Personal_Income.objects.filter(user=user).filter(date__gte=str(start), date__lte=str(end))
+            serialized_pi = PISerializer(pi, many=True)
+            print(serialized_pi)
+        except:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        return Response(serialized_pi.data, status=status.HTTP_200_OK)
+
+# Return tpi total value of transactions from any date range specified in as query parameters in the url
+class PIMonthlyTotal(APIView):
+    def get(self, request):
+        try:
+            start = request.GET.get('start')
+            end = request.GET.get('end')
+            user = request.GET.get('user')
+            pi = Personal_Income.objects.filter(user=user).filter(date__gte=str(start), date__lte=str(end)).values()
+            amounts = []
+            for transaction in pi:
+                amounts.append(transaction['amount'])
+                print(transaction['amount'])
+            total = reduce((lambda x, y: x + y), amounts)
+        except:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        return Response(total, status=status.HTTP_200_OK)
+
+# Return the largest transaction from any date range
+class PILargestExpense(APIView):
+    def get(self, request):
+        try:
+            start = request.GET.get('start')
+            end = request.GET.get('end')
+            user = request.GET.get('user')
+            pi = Personal_Income.objects.filter(user=user).filter(date__gte=str(start), date__lte=str(end)).order_by('-amount')
+            serialized_pi =PISerializer(pi, many=True)
+        except:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        return Response(serialized_pi.data, status=status.HTTP_200_OK)
+
