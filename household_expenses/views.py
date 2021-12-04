@@ -79,7 +79,8 @@ class HELastMonth(APIView):
         try:
             start = request.GET.get('start')
             end = request.GET.get('end')
-            he = Household_Expenses.objects.filter(date__gte=str(start), date__lte=str(end))
+            house = request.GET.get('house')
+            he = Household_Expenses.objects.filter(household=house).filter(date__gte=str(start), date__lte=str(end))
             print(he)
             serialized_he = HESerializer(he, many=True)
         except:
@@ -92,7 +93,8 @@ class HEMonthlyTotal(APIView):
         try:
             start = request.GET.get('start')
             end = request.GET.get('end')
-            he = Household_Expenses.objects.filter(date__gte=str(start), date__lte=str(end)).values()
+            house = request.GET.get('house')
+            he = Household_Expenses.objects.filter(household=house).filter(date__gte=str(start), date__lte=str(end)).values()
             amounts = []
             for transaction in he:
                 amounts.append(transaction['amount'])
@@ -108,7 +110,8 @@ class HELargestExpense(APIView):
         try:
             start = request.GET.get('start')
             end = request.GET.get('end')
-            he = Household_Expenses.objects.filter(date__gte=str(start), date__lte=str(end)).order_by('-amount')
+            house = request.GET.get('house')
+            he = Household_Expenses.objects.filter(household=house).filter(date__gte=str(start), date__lte=str(end)).order_by('-amount')
             serialized_he =HESerializer(he, many=True)
         except:
             return Response(status=status.HTTP_404_NOT_FOUND)
