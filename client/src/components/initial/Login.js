@@ -1,15 +1,19 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { useMutation } from 'react-query';
 import { postLogin } from '../../lib/api';
 
 const Login = () => {
+  const history = useHistory();
+
   const [login, setLogin] = useState({
     username: '',
     password: '',
   });
 
-  const { mutate } = useMutation(postLogin, {});
+  const { mutate } = useMutation(postLogin, {
+    onSuccess: () => history.push('/dashboard'),
+  });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -53,9 +57,9 @@ const Login = () => {
         </div>
         <button className="pr-btn bg-opacity-95 w-3/4 ">Sign In</button>
       </form>
-      <div className="mt-8 w-full flex flex-col items-center">
+      <div className="mt-8 w-full flex flex-col items-center space-y-3">
         <p className="text-white">Not signed up?</p>
-        <Link to="/register" className="pr-btn bg-opacity-95 w-1/4 mt-4">
+        <Link to="/register" className="alt-btn">
           Sign Up
         </Link>
       </div>

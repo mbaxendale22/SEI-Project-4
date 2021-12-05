@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 const Sidebar = () => {
   return (
     <>
-      <nav className="flex flex-col items-center space-y-5 text-white w-full">
+      <nav className="z-20 flex flex-col items-center space-y-5 text-white w-full">
         <Link className="hover:bg-red-300 w-full p-2 text-center">
           Dashboard
         </Link>
@@ -17,7 +17,9 @@ const Sidebar = () => {
           Household
         </Link>
       </nav>
-      <div className="text-center alt-btn mx-4">Sign out</div>
+      <div className="text-center alt-btn mx-4 cursor-pointer transform hover:-translate-y-1">
+        Sign out
+      </div>
     </>
   );
 };
