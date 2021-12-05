@@ -2,6 +2,8 @@ export const getTokenFromLocalStorage = () => {
   return window.localStorage.getItem('token') // get token from local storage
 }
 
+export const setTokenToLocalStorage = token => window.localStorage.setItem('token', token)
+
 export const getPayload = () => {
   const token = getTokenFromLocalStorage() // store the response of get token function in variable
   if (!token) return // if no token exists just return here
@@ -18,3 +20,4 @@ export const userIsAuthenticated = () => {
   if (!payload) return false // if there is no payload returned function returns false
   const now = Math.round(Date.now() / 1000) // get the current time in milliseconds and convert to seconds as this is the format the expiry time on the token is in
   return now < payload.exp // check if the current time is less than the expiry time, returns a boolean
+}

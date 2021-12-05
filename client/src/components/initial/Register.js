@@ -1,40 +1,46 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
-import axios from 'axios'
+import { useMutation } from 'react-query'
+// import { setTokenToLocalStorage } from '../../helpers/auth.js' 
+// import { headers } from '../../lib/headers.js'
+import { Link, useHistory } from 'react-router-dom'
+import { postRegister } from '../../lib/api'
+// import axios from 'axios'
 
-// this is where you'll set the userContext from the data returned by the post request, this 
-// will make the user data available for api calls acorss the app
+const Register = () => { 
+  
+  const history = useHistory()
+  // const { common } = headers
 
+  const [register, setRegister] = useState({
+    username: '',
+    email: '',
+    password: '',
+    password_confirmation: ''
+  })
 
-const Register = () => {
+  
 
-const [register, setRegister] = useState({
-  username: '',
-  email: '',
-  password: '',
-  passwordConfirmation: ''
-})
+  // const postRegister = async () => {
+  //   axios.post('/api/users/register/', register, {
+  //    headers: {
+  //      common
+  //   }
+  // })}
 
-const [error, setError] = useState(false)
-
-const setItemToLocalStorage = token => window.localStorage.setItem('token', token)
-
+  const { mutate } = useMutation(postRegister, {
+    onSuccess: () => history.push('/login')
+  })
 
 const handleSubmit = async (e) => {
   e.preventDefault()
-  try {
-    const { data } = await axios.post('/api/login', register)
-    setItemToLocalStorage(data.token)
-  } catch (err) {
-    setError(true)
-  }
-  const inputs = [ ...document.querySelectorAll('input') ]
+  mutate(register)
 }
 
 
 const handleChange = (e) => {
   const newRegister = { ...register, [e.target.name]: e.target.value }
   setRegister(newRegister)
+  console.log(newRegister)
 }
 
 
@@ -45,37 +51,43 @@ const handleChange = (e) => {
 
   return (
     <div className='bg-primary bg-opacity-90 h-screen flex flex-col justify-center items-center'>
-      <form className= ' shadow-md h-4/6 w-7/12 flex items-center justify-evenly flex-col'>
+      <form
+        onSubmit={handleSubmit} 
+        className= ' border-r-2 border-t-2 border-white shadow-md h-4/6 w-7/12 flex items-center justify-evenly flex-col'>
         <div className= 'w-3/4 flex flex-col'>
-          <label for='username' className=''>Username</label>
-          <input 
+          <label htmlFor='username' className=''>Username</label>
+          <input
+          onChange={handleChange} 
           type='text' name='username' placeholder='username...' 
           className='rounded-md mt-3 p-1'></input>
         </div>
         <div className='w-3/4 flex flex-col'>
-          <label for='email' className=''>Email</label>
+          <label htmlFor='email' className=''>Email</label>
           <input
+          onChange={handleChange}
           type='email' name='email' placeholder='email...' 
           className=' rounded-md mt-3 p-1'></input>
         </div>
         <div className='w-3/4 flex flex-col'>
-          <label for='password' className=''>Password</label>
+          <label htmlFor='password' className=''>Password</label>
           <input
+          onChange={handleChange}
           type='password' name='password' placeholder='password...' 
           className='rounded-md mt-3 p-1'></input>
         </div>
         <div className='w-3/4 flex flex-col'>
-          <label for='passwordConfirmation'
+          <label htmlFor='passwordConfirmation'
           className=''>Confirm Password</label>
-          <input 
-          type='password' name='passwordConfirmation' placeholder='confirm password...' 
+          <input
+          onChange={handleChange} 
+          type='password' name='password_confirmation' placeholder='confirm password...' 
           className='rounded-md mt-3 p-1'></input>
         </div>
-        <div className='pr-btn bg-opacity-95 w-3/4 '>Sign Up</div>
+        <button className='pr-btn bg-opacity-95 w-3/4 '>Sign Up</button>
       </form>
-      <div className='mt-8 w-full flex flex-col items-center'>
-      <p className='text-white'>Already Signed up?</p>
-      <Link to='/login' className='pr-btn bg-opacity-95 w-1/4 mt-4'>Sign In</Link>
+      <div className='mt-8 w-full flex flex-col gap-3 items-center'>
+      <p className='text-black'>Already signed up?</p>
+        <Link to='/login' className='border-2 border-white p-2 rounded-md shadow-md text-white'>Sign In</Link>
       </div>
     </div>
   )
