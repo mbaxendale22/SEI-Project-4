@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { useMutation } from 'react-query';
 import { postLogin } from '../../lib/api';
+import { setTokenToLocalStorage } from '../../helpers/auth';
 
 const Login = () => {
   const history = useHistory();
@@ -12,7 +13,9 @@ const Login = () => {
   });
 
   const { mutate } = useMutation(postLogin, {
-    onSuccess: () => history.push('/dashboard'),
+    onSuccess: () => {
+      history.push('/dashboard');
+    },
   });
 
   const handleSubmit = async (e) => {
@@ -26,7 +29,7 @@ const Login = () => {
   };
 
   return (
-    <div className="bg-primary bg-opacity-90 h-screen flex flex-col justify-center items-center">
+    <div className="bg-primary bg-opacity-100 h-screen flex flex-col justify-center items-center">
       <form
         onSubmit={handleSubmit}
         className=" border-r-2 border-t-2 border-white shadow-md h-3/6 w-7/12 flex items-center justify-evenly flex-col"
@@ -40,7 +43,7 @@ const Login = () => {
             type="email"
             name="email"
             placeholder="email..."
-            className=" rounded-md mt-3 p-1"
+            className=" rounded-md mt-3 p-1 bg-primary border-b-2 focus:outline-none placeholder-white"
           ></input>
         </div>
         <div className="w-3/4 flex flex-col">
@@ -52,7 +55,7 @@ const Login = () => {
             type="password"
             name="password"
             placeholder="password..."
-            className="rounded-md mt-3 p-1"
+            className="rounded-md mt-3 p-1 bg-primary border-b-2 focus:outline-none placeholder-white"
           ></input>
         </div>
         <button className="pr-btn bg-opacity-95 w-3/4 ">Sign In</button>

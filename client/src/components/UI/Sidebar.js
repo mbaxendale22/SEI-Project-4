@@ -1,7 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { RemoveTokenFromLocalStorage } from '../../helpers/auth';
 
 const Sidebar = () => {
+  const handleSignOut = () => RemoveTokenFromLocalStorage();
+
   return (
     <>
       <nav className="z-20 flex flex-col items-center space-y-5 text-white w-full">
@@ -17,9 +20,13 @@ const Sidebar = () => {
           Household
         </Link>
       </nav>
-      <div className="text-center alt-btn mx-4 cursor-pointer transform hover:-translate-y-1">
+      <Link
+        to="/"
+        onClick={handleSignOut}
+        className="text-center alt-btn mx-4 cursor-pointer transform hover:-translate-y-1"
+      >
         Sign out
-      </div>
+      </Link>
     </>
   );
 };
