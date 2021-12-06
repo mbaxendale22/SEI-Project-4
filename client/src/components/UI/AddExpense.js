@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
-import { useMutation, useQuery } from 'react-query';
+import React, { Children, useState } from 'react';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { postExpenses } from '../../lib/api';
 
 const AddExpense = ({ setShowModal }) => {
-  const { data: user } = useQuery('userData');
+  const queryClient = useQueryClient();
+  //access the userdata from the cache
+  const user = queryClient.getQueryData(['userData']);
 
   const [expense, setExpense] = useState({
     name: '',
@@ -25,6 +27,7 @@ const AddExpense = ({ setShowModal }) => {
   const handleChange = (e) => {
     const newExpense = { ...expense, [e.target.name]: e.target.value };
     setExpense(newExpense);
+    console.log(newExpense);
   };
 
   const handleSubmit = async (e) => {
@@ -34,7 +37,7 @@ const AddExpense = ({ setShowModal }) => {
 
   return (
     <div className="h-full flex flex-col gap-10 items-center">
-      <form onSubmit={handleSubmit} className="flex flex-col gap-7 mt-10 w-1/3">
+      <form onSubmit={handleSubmit} className="flex flex-col gap-7 mt-10 w-2/3">
         <input
           onChange={handleChange}
           type="text"

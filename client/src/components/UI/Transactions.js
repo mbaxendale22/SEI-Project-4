@@ -1,32 +1,37 @@
 import React from 'react';
 import { getRecentExpenses } from '../../lib/api';
-import { useQuery } from 'react-query';
+import { useQuery, useMutation, useQueryClient } from 'react-query';
+import { isResolved, reverseDate } from '../../helpers/rendering';
+import { deleteExpense } from '../../lib/api';
 const Transactions = ({ setShowModal }) => {
+  const queryClient = useQueryClient();
   const {
     data: recent,
     isError: errors,
     isLoading: loading,
   } = useQuery('recent', getRecentExpenses);
 
-  const isResolved = (item) => {
-    if (item.shared && item.resolved) {
-      return 'md:border-2 md:border-green-200 text-green-200  w-3/4 rounded-md';
-    } else if (item.shared && !item.resolved) {
-      return 'md:border-2 md:border-primary text-primary w-3/4 rounded-md';
-    } else {
-      return '';
+  const { mutate } = useMutation(
+    (id) => {
+      return deleteExpense(id);
+    },
+    {
+      onSuccess: () => queryClient.invalidateQueries('recent'),
     }
-  };
+  );
 
-  console.log(recent);
+  // queryClient.getQueryData()
+  if (loading) return <p>loading...</p>;
+  if (errors) return <p>Something has gone wrong please try again later</p>;
 
   return (
     <section className="h-full flex flex-col justify-evenly relative">
       <h2 className="text-center py-3">Recent Expenses</h2>
-      <div className="grid grid-cols-7 overflow-x-scroll gap-2 text-center">
+      <div className="grid grid-cols-8 overflow-x-scroll gap-2 text-center">
         {recent?.map((item) => {
           return (
             <>
+              <div key={recent.id}>{reverseDate(item.date)}</div>
               <div>{item.name}</div>
               <div>
                 {item.category === 'entertainment' ? <p>ent</p> : item.category}
@@ -34,18 +39,21 @@ const Transactions = ({ setShowModal }) => {
               <div>£{item.amount}</div>
               <div
                 className={
-                  item.shared
-                    ? ' md:border-2 border-green-200 text-green-200  w-3/4 rounded-md'
+                  item.share
+                    ? ' md:border-2 border-green-400 text-green-400  w-3/4 rounded-md'
                     : 'md:border-2 border-primary text-primary w-3/4 rounded-md'
                 }
               >
                 shared
               </div>
-              <div className={isResolved(item)}>resolved</div>
+              {isResolved(item)}
               <div className="border-2 border-gray-400 hover:shadow-md w-3/4 rounded-md transform hover:-translate-x-1">
                 edit
               </div>
-              <div className="border-2 border-gray-400 hover:shadow-md w-3/4 rounded-md transform hover:-translate-x-1">
+              <div
+                onClick={() => mutate(item.id)}
+                className="border-2 border-gray-400 hover:shadow-md w-3/4 rounded-md transform hover:-translate-x-1"
+              >
                 delete
               </div>
             </>

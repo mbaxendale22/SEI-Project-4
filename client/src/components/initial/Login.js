@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { useMutation } from 'react-query';
 import { postLogin } from '../../lib/api';
-import { setTokenToLocalStorage } from '../../helpers/auth';
 
 const Login = () => {
   const history = useHistory();
@@ -35,9 +34,6 @@ const Login = () => {
         className=" border-r-2 border-t-2 border-white shadow-md h-3/6 w-7/12 flex items-center justify-evenly flex-col"
       >
         <div className="w-3/4 flex flex-col">
-          <label htmlFor="email" className="">
-            Email
-          </label>
           <input
             onChange={handleChange}
             type="email"
@@ -47,9 +43,6 @@ const Login = () => {
           ></input>
         </div>
         <div className="w-3/4 flex flex-col">
-          <label htmlFor="password" className="">
-            Password
-          </label>
           <input
             onChange={handleChange}
             type="password"

@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { Doughnut } from 'react-chartjs-2';
+// import { Doughnut } from 'react-chartjs-2';
 import { useQuery } from 'react-query';
 import { getCategories } from '../../lib/api';
-import donutChart from '../charts/Donut';
+// import donutChart from '../charts/Donut';
 import Transactions from '../UI/Transactions';
 import AddExpense from '../UI/AddExpense';
 
@@ -20,7 +20,9 @@ const PersonalExpenses = ({ user }) => {
       <div>
         <p>{user?.username}'s Expenses</p>
       </div>
-      <div className=" w-full text-xs md:text-sm h-1/3 lg:text-base md:w-10/12 lg:w-3/4 md:h-2/3 border-primary border-2">
+      {isLoading && <p>Loading...</p>}
+      {isError && <p>Something has gone wrong please try again later</p>}
+      <div className=" w-full h-3/4 text-xs md:text-sm sm:h-1/3 lg:text-base md:w-10/12 lg:w-3/4 md:h-2/3 border-primary border-2">
         {showModal ? (
           <AddExpense setShowModal={setShowModal} />
         ) : (
