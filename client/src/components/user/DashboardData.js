@@ -1,17 +1,14 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Doughnut } from 'react-chartjs-2';
 import { useQuery } from 'react-query';
-import { getAverageExpense } from '../../lib/api';
+import { getAverageExpense, getCategories } from '../../lib/api';
 import donutChart from '../charts/Donut';
 
 const DashboardData = ({ user }) => {
-  const { data, isError, isLoading } = useQuery(
-    'categories',
-    getAverageExpense
-  );
+  const { data, isError, isLoading } = useQuery('categories', getCategories);
 
   return (
-    <div className="h-full w-full border-2 border-black flex flex-col gap-10 pt-12 items-center ">
+    <div className="h-full w-full border-2 border-black flex flex-col gap-10 pt-12 items-center">
       <div>
         <p>Welcome back {user?.username}</p>
       </div>
