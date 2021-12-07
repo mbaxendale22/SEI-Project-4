@@ -7,6 +7,16 @@ from .serializers import PISerializer
 from functools import reduce
 
 
+class PIUserView(APIView):
+    def get(self, request, user):
+        print('********* hitting the correct view' + user)
+        try: 
+            pi = Personal_Income.objects.filter(user=user)
+            print(pi)
+            serialized_pi = PISerializer(pi, many=True)
+        except:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        return Response(serialized_pi.data, status=status.HTTP_200_OK)
 
 class PIIndexView(APIView):
     def get(self, request):
