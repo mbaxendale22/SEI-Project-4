@@ -11,7 +11,6 @@ class PIUserView(APIView):
     def get(self, request, user):
         try: 
             pi = Personal_Income.objects.filter(user=user).order_by('-date')
-            print(pi)
             serialized_pi = PISerializer(pi, many=True)
         except:
             return Response(status=status.HTTP_404_NOT_FOUND)
@@ -84,14 +83,12 @@ class PIRecentView(APIView):
 # Return all transactions from any date range specified in as query parameters in the url
 class PILastMonth(APIView):
     def get(self, request):
-        print('hitting the correct view')
         try:
             start = request.GET.get('start')
             end = request.GET.get('end')
             user = request.GET.get('user')
             pi = Personal_Income.objects.filter(user=user).filter(date__gte=str(start), date__lte=str(end))
             serialized_pi = PISerializer(pi, many=True)
-            print(serialized_pi)
         except:
             return Response(status=status.HTTP_404_NOT_FOUND)
         return Response(serialized_pi.data, status=status.HTTP_200_OK)
@@ -114,7 +111,7 @@ class PIMonthlyTotal(APIView):
         return Response(total, status=status.HTTP_200_OK)
 
 # Return the largest transaction from any date range
-class PILargestExpense(APIView):
+class PILargestIncome(APIView):
     def get(self, request):
         try:
             start = request.GET.get('start')
@@ -125,4 +122,38 @@ class PILargestExpense(APIView):
         except:
             return Response(status=status.HTTP_404_NOT_FOUND)
         return Response(serialized_pi.data, status=status.HTTP_200_OK)
+
+
+class PISpendingByCategory(APIView):
+
+    def get(self, request, user):
+        try:
+            pe = Personal_Income.objects.filter(user=user).values()
+
+            Salary = list(filter(lambda x: x.get('category') == 'Salary', pe ))
+            Selling = list(filter(lambda x: x.get('category') == 'Selling', pe ))
+            Passive = list(filter(lambda x: x.get('category') == 'Passive', pe ))
+            Misc = list(filter(lambda x: x.get('category') == 'Misc', pe ))
+            categories = [Salary, Selling, Passive, Misc]
+            total_amount= {}
+        
+            def get_amounts(category):
+                if len(category) == 0:
+                    pass
+                else:
+                    category_name = ''
+                    category_total = []
+                    for cost in category:
+                        category_total.append(cost['amount'])
+                        category_name = cost['category']
+                    final = reduce(lambda x, y: x + y, category_total)
+                    total_amount[category_name] = final
+                    
+            
+            for choice in categories:
+                get_amounts(choice)
+
+        except:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        return Response(total_amount, status=status.HTTP_200_OK)
 

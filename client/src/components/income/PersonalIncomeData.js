@@ -2,20 +2,22 @@ import React from 'react';
 import { useQuery } from 'react-query';
 import { getCategories } from '../../lib/api/PE.js';
 import { Doughnut } from 'react-chartjs-2';
-import ExpensesDonut from '../charts/ExpensesDonut';
+import IncomeDonut from '../charts/IncomeDonut';
 import { reverseDate } from '../../helpers/rendering';
 import { doubleChevUp } from '../../assets/doublechev';
-import {
-  getTotalExpenses,
-  getPreviousTotalExpenses,
-  getLargestExpense,
-} from '../../lib/api/PE.js';
+import { getTotalExpenses } from '../../lib/api/PE.js';
+import { getIncomeCategories, getLargestIncome } from '../../lib/api/PI.js';
 
 const PersonalIncomeData = ({ move }) => {
-  const { data: cat, isLoading } = useQuery('categories', getCategories);
+  const { data: cat, isLoading } = useQuery(
+    'incomeCategories',
+    getIncomeCategories
+  );
   const { data: total } = useQuery('total', getTotalExpenses);
-  // const { data: previous } = useQuery('previous', getPreviousTotalExpenses);
-  const { data: largest } = useQuery('largest', getLargestExpense);
+  const { data: largest, isLoading: loadingLargest } = useQuery(
+    'largestIncome',
+    getLargestIncome
+  );
 
   const moveBack = () => {
     window.scroll({
@@ -24,6 +26,10 @@ const PersonalIncomeData = ({ move }) => {
       behavior: 'smooth',
     });
   };
+
+  console.log(largest);
+
+  if (loadingLargest) return <p>Loading...</p>;
 
   return (
     <>
@@ -39,17 +45,19 @@ const PersonalIncomeData = ({ move }) => {
         </div>
         <div className="p-4">
           <p>Your largest expense this month:</p>
-          <div className="flex gap-2 mt-4">
-            <p className="bg-primary text-white shadow-sm rounded-md p-2">
-              {largest[0]?.name}
-            </p>
-            <p className="bg-primary text-white shadow-sm rounded-md p-2">
-              £{largest[0]?.amount}
-            </p>
-            <p className="bg-primary text-white shadow-sm rounded-md p-2">
-              {reverseDate(largest[0]?.date)}
-            </p>
-          </div>
+          {!isLoading && (
+            <div className="flex gap-2 mt-4">
+              <p className="bg-primary text-white shadow-sm rounded-md p-2">
+                {largest[0]?.name}
+              </p>
+              <p className="bg-primary text-white shadow-sm rounded-md p-2">
+                £{largest[0]?.amount}
+              </p>
+              <p className="bg-primary text-white shadow-sm rounded-md p-2">
+                {reverseDate(largest[0]?.date)}
+              </p>
+            </div>
+          )}
         </div>
       </div>
       <p>Your Spending by category this month</p>
@@ -58,16 +66,7 @@ const PersonalIncomeData = ({ move }) => {
           <p>Loading your data...</p>
         ) : (
           <Doughnut
-            data={ExpensesDonut(
-              cat.bills,
-              cat.dining,
-              cat.entertainment,
-              cat.general,
-              cat.grocery,
-              cat.retail,
-              cat.transport,
-              cat.travel
-            )}
+            data={IncomeDonut(cat.Salary, cat.Selling, cat.Passive, cat.Misc)}
           />
         )}
       </div>
