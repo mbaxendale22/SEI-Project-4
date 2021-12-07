@@ -10,7 +10,7 @@ from functools import reduce
 class PIUserView(APIView):
     def get(self, request, user):
         try: 
-            pi = Personal_Income.objects.filter(user=user)
+            pi = Personal_Income.objects.filter(user=user).order_by('-date')
             print(pi)
             serialized_pi = PISerializer(pi, many=True)
         except:
