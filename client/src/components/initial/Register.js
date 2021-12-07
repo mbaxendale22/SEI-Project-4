@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useMutation } from 'react-query';
 import { Link, useHistory } from 'react-router-dom';
-import { postRegister } from '../../lib/api';
+import { postRegister } from '../../lib/api/PE';
 
 const Register = () => {
   const history = useHistory();

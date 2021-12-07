@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
 import { useQuery } from 'react-query';
 import { menuIcon } from '../../assets/menuIcon';
-import { getUser } from '../../lib/api';
+import { getUser } from '../../lib/api/PE.js';
 import DashboardData from './DashboardData';
 import Sidebar from '../UI/Sidebar';
 import PersonalExpenses from './PersonalExpenses';
 import PersonalIncome from './PersonalIncome';
 import PersonalAssets from './PersonalAssets';
 import PersonalExpensesData from './PersonalExpensesData';
+import PersonalIncomeData from './PersonalIncomeData';
 
 const Dashboard = () => {
   const { data, isLoading, isError } = useQuery('userData', getUser);
@@ -49,14 +50,21 @@ const Dashboard = () => {
 
         <div className=" z-0 main-content h-screen w-full border-black border-2 absolute top-0 transform translate-x-0 transition duration-300 ease-in-out">
           {navigate === 0 && <DashboardData user={data} />}
-          {navigate === 1 && <PersonalIncome user={data} />}
+          {navigate === 1 && <PersonalIncome user={data} move={move} />}
           {navigate === 2 && <PersonalExpenses user={data} move={move} />}
           {navigate === 3 && <PersonalAssets user={data} />}
         </div>
       </div>
-      <div className="reveal-page hide-page">
-        <PersonalExpensesData />
-      </div>
+      {navigate === 0 && (
+        <div className="reveal-page hide-page">
+          <PersonalExpensesData />
+        </div>
+      )}
+      {navigate === 1 && (
+        <div className="reveal-page hide-page">
+          <PersonalIncomeData />
+        </div>
+      )}
     </>
   );
 };

@@ -11,14 +11,11 @@ import {
   getLargestExpense,
 } from '../../lib/api/PE.js';
 
-const PersonalExpensesData = ({ move }) => {
+const PersonalIncomeData = ({ move }) => {
   const { data: cat, isLoading } = useQuery('categories', getCategories);
   const { data: total } = useQuery('total', getTotalExpenses);
   // const { data: previous } = useQuery('previous', getPreviousTotalExpenses);
-  const { data: largest, isLoading: stillLoading } = useQuery(
-    'largest',
-    getLargestExpense
-  );
+  const { data: largest } = useQuery('largest', getLargestExpense);
 
   const moveBack = () => {
     window.scroll({
@@ -28,8 +25,6 @@ const PersonalExpensesData = ({ move }) => {
     });
   };
 
-  if (stillLoading) return <p>Loading...</p>;
-
   return (
     <>
       <span onClick={moveBack} className=" mt-10 transform hover:scale-150">
@@ -37,7 +32,7 @@ const PersonalExpensesData = ({ move }) => {
       </span>
       <div>
         <div>
-          <p>Your total expenses this month so far:</p>
+          <p>THIS IS A DIFFERENT PAGE BUT WITH THE SAME DATA FOR NOW</p>
           <p className="bg-primary w-1/3 text-center m-auto text-white shadow-sm rounded-md p-2">
             £{total}
           </p>
@@ -80,4 +75,4 @@ const PersonalExpensesData = ({ move }) => {
   );
 };
 
-export default PersonalExpensesData;
+export default PersonalIncomeData;

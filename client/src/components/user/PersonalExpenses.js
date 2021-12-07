@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useQuery } from 'react-query';
-import { getCategories } from '../../lib/api';
+import { getCategories } from '../../lib/api/PE.js';
 import Transactions from '../UI/Transactions';
 import AddExpense from '../UI/AddExpense';
 import { doubleChevDown } from '../../assets/doublechev';

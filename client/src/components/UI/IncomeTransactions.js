@@ -1,23 +1,24 @@
 import React, { useState } from 'react';
-import { getRecentExpenses } from '../../lib/api/PE.js';
+import { getIncome } from '../../lib/api/PI.js';
 import { useQuery, useMutation, useQueryClient } from 'react-query';
 import { isResolved, reverseDate } from '../../helpers/rendering';
-import { deleteExpense } from '../../lib/api/PE.js';
+import { deleteExpense } from '../../lib/api/PE';
 import EditExpense from './EditExpense';
-const Transactions = ({ setShowModal }) => {
+
+const IncomeTransactions = ({ setShowModal }) => {
   const queryClient = useQueryClient();
   const {
     data: recent,
     isError: errors,
     isLoading: loading,
-  } = useQuery('recent', getRecentExpenses);
+  } = useQuery('income', getIncome);
 
   const { mutate } = useMutation(
     (id) => {
       return deleteExpense(id);
     },
     {
-      onSuccess: () => queryClient.invalidateQueries('recent'),
+      onSuccess: () => queryClient.invalidateQueries('income'),
     }
   );
 
@@ -31,7 +32,7 @@ const Transactions = ({ setShowModal }) => {
   return (
     <section className="h-full flex flex-col justify-evenly relative">
       <h2 className="text-center py-3">Recent Expenses</h2>
-      <div className="grid grid-cols-8 overflow-x-scroll gap-2 text-center">
+      <div className="grid grid-cols-6 overflow-x-scroll gap-2 text-center">
         {recent?.map((item) => {
           return (
             <>
@@ -41,16 +42,6 @@ const Transactions = ({ setShowModal }) => {
                 {item.category === 'entertainment' ? <p>ent</p> : item.category}
               </div>
               <div>£{item.amount}</div>
-              <div
-                className={
-                  item.share
-                    ? ' md:border-2 border-green-400 text-green-400  w-3/4 rounded-md'
-                    : 'md:border-2 border-primary text-primary w-3/4 rounded-md'
-                }
-              >
-                shared
-              </div>
-              {isResolved(item)}
               <div
                 onClick={() => {
                   setCurrentItem(item);
@@ -80,4 +71,4 @@ const Transactions = ({ setShowModal }) => {
   );
 };
 
-export default Transactions;
+export default IncomeTransactions;

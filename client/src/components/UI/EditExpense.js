@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
-import { updateExpense } from '../../lib/api';
+import { updateExpense } from '../../lib/api/PE.js';
 
 const EditExpense = ({ setEditing, item }) => {
   const queryClient = useQueryClient();

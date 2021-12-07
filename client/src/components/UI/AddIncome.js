@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { postExpenses } from '../../lib/api/PE.js';
 
-const AddExpense = ({ setShowModal }) => {
+const AddIncome = ({ setShowModal }) => {
   const queryClient = useQueryClient();
   //access the userdata from the cache
   const user = queryClient.getQueryData(['userData']);
@@ -107,4 +107,4 @@ const AddExpense = ({ setShowModal }) => {
   );
 };
 
-export default AddExpense;
+export default AddIncome;

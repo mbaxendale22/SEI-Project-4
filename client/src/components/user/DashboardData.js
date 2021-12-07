@@ -1,7 +1,7 @@
 import React from 'react';
 import { Doughnut } from 'react-chartjs-2';
 import { useQuery } from 'react-query';
-import { getCategories } from '../../lib/api';
+import { getCategories } from '../../lib/api/PE.js';
 import donutChart from '../charts/Donut';
 
 const DashboardData = ({ user }) => {

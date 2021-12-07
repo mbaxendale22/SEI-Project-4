@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { useMutation } from 'react-query';
-import { postLogin } from '../../lib/api';
+import { postLogin } from '../../lib/api/PE';
 
 const Login = () => {
   const history = useHistory();
