@@ -5,12 +5,13 @@ from django.db import models
 
 class Personal_Income(models.Model):
     PI_CHOICES = (
-        ('PC', 'Paycheck'),
-        ('SL', 'Selling'),
-        ('OT', 'Other'),
+        ('Paycheck', 'Paycheck'),
+        ('Selling', 'Selling'),
+        ('Passive', 'Passive'),
+        ('Misc', 'Misc'),
     )
     name = models.CharField(max_length=100)
-    category = models.CharField(max_length=2, choices=PI_CHOICES) 
+    category = models.CharField(max_length=10, choices=PI_CHOICES) 
     amount = models.IntegerField()
     date = models.DateField(auto_now=False, auto_now_add=False)
     user = models.ForeignKey("auth_jwt.User", on_delete=models.CASCADE)
