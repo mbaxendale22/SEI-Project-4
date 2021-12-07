@@ -17,6 +17,11 @@
   .transaction-btn {
     @apply border-2 border-gray-400 hover:shadow-md w-3/4 rounded-md transform hover:-translate-x-1
   }
+
+  .dashboard-btn {
+    @apply border-primary border-2 p-1 rounded-md shadow-sm text-center transform hover:-translate-x-1 hover:-translate-y-1 duration-300 ease-in-out
+  }
+
   .show-page {
     @apply h-screen flex flex-col items-center justify-evenly
   }

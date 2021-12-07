@@ -17,12 +17,15 @@ const DashboardData = ({ user }) => {
       </div>
       <div className="w-1/4">
         {user?.household ? (
-          <div>Your household number is {user?.household}</div>
+          <>
+            <div>Your unique household number is {user?.household}</div>
+            <Link to="/manage-household">
+              <div className="dashboard-btn">Manage your household details</div>
+            </Link>
+          </>
         ) : (
           <Link to="/manage-household">
-            <div className=" border-primary border-2 p-1 rounded-md shadow-sm text-center text-black">
-              Join or create a household
-            </div>
+            <div className="dashboard-btn">Join or create a household</div>
           </Link>
         )}
       </div>
