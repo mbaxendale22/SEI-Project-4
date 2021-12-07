@@ -2,7 +2,7 @@ import React from 'react';
 import { useQuery } from 'react-query';
 import { getCategories } from '../../lib/api/PE.js';
 import { Doughnut } from 'react-chartjs-2';
-import donutChart from '../charts/Donut';
+import ExpensesDonut from '../charts/ExpensesDonut';
 import { reverseDate } from '../../helpers/rendering';
 import { doubleChevUp } from '../../assets/doublechev';
 import {
@@ -63,7 +63,7 @@ const PersonalExpensesData = ({ move }) => {
           <p>Loading your data...</p>
         ) : (
           <Doughnut
-            data={donutChart(
+            data={ExpensesDonut(
               cat.bills,
               cat.dining,
               cat.entertainment,

@@ -2,7 +2,7 @@ import React from 'react';
 import { Doughnut } from 'react-chartjs-2';
 import { useQuery } from 'react-query';
 import { getCategories } from '../../lib/api/PE.js';
-import donutChart from '../charts/Donut';
+import ExpensesDonut from '../charts/ExpensesDonut';
 
 const DashboardData = ({ user }) => {
   const { data, isError, isLoading } = useQuery('categories', getCategories);
@@ -29,7 +29,7 @@ const DashboardData = ({ user }) => {
           <p>Loading your data...</p>
         ) : (
           <Doughnut
-            data={donutChart(
+            data={ExpensesDonut(
               data.bills,
               data.dining,
               data.entertainment,

@@ -3,7 +3,7 @@ import { getRecentExpenses } from '../../lib/api/PE.js';
 import { useQuery, useMutation, useQueryClient } from 'react-query';
 import { isResolved, reverseDate } from '../../helpers/rendering';
 import { deleteExpense } from '../../lib/api/PE.js';
-import EditExpense from './EditExpense';
+import EditExpense from '../expenses/EditExpense';
 const Transactions = ({ setShowModal }) => {
   const queryClient = useQueryClient();
   const {

@@ -1,38 +1,34 @@
 import React, { useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
-import { postExpenses } from '../../lib/api/PE.js';
+import { postIncome } from '../../lib/api/PI.js';
 
 const AddIncome = ({ setShowModal }) => {
   const queryClient = useQueryClient();
   //access the userdata from the cache
   const user = queryClient.getQueryData(['userData']);
 
-  const [expense, setExpense] = useState({
+  const [income, setIncome] = useState({
     name: '',
     category: '',
     amount: '',
     date: '',
-    share: 'false',
-    resolved: 'false',
-    owner: user.id,
-    creator: user.id,
+    user: user.id,
   });
 
-  const { mutate } = useMutation(postExpenses, {
+  const { mutate } = useMutation(postIncome, {
     onSuccess: () => {
       setShowModal(false);
     },
   });
 
   const handleChange = (e) => {
-    const newExpense = { ...expense, [e.target.name]: e.target.value };
-    setExpense(newExpense);
-    console.log(newExpense);
+    const newIncome = { ...income, [e.target.name]: e.target.value };
+    setIncome(newIncome);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    mutate(expense);
+    mutate(income);
   };
 
   return (
@@ -52,15 +48,11 @@ const AddIncome = ({ setShowModal }) => {
           placeholder="category"
           className="border-primary border-b-2 focus:outline-none"
         >
-          <option>choose category</option>
-          <option value="bills">Bills</option>
-          <option value="dining">Eating Out</option>
-          <option value="entertainment">Entertainment</option>
-          <option value="general">General</option>
-          <option value="grocery">Grocery</option>
-          <option value="retail">Retail</option>
-          <option value="transport">Transport</option>
-          <option value="travel">Travel & Leisure</option>
+          <option>choose category</option>`{' '}
+          <option value="Paycheck">Paycheck</option>
+          <option value="Selling">Selling</option>
+          <option value="Passive">Passive</option>
+          <option value="Misc">Misc</option>`
         </select>
         <input
           onChange={handleChange}
@@ -76,23 +68,6 @@ const AddIncome = ({ setShowModal }) => {
           placeholder="date"
           className="border-primary border-b-2 focus:outline-none"
         ></input>
-        <div className="flex items-center justify-between">
-          <p>Share with household?</p>
-          <label htmlFor="true">Yes</label>
-          <input
-            onChange={handleChange}
-            type="radio"
-            value="true"
-            name="share"
-          ></input>
-          <label htmlFor="no">No</label>
-          <input
-            onChange={handleChange}
-            type="radio"
-            value="false"
-            name="share"
-          ></input>
-        </div>
         <div className="flex items-center justify-around">
           <button className="transaction-btn w-1/4 text-center">Save</button>
           <div

@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import { getIncome } from '../../lib/api/PI.js';
 import { useQuery, useMutation, useQueryClient } from 'react-query';
 import { isResolved, reverseDate } from '../../helpers/rendering';
-import { deleteExpense } from '../../lib/api/PE';
-import EditExpense from './EditExpense';
+import { deleteIncome } from '../../lib/api/PI';
+import EditIncome from './EditIncome.js';
 
 const IncomeTransactions = ({ setShowModal }) => {
   const queryClient = useQueryClient();
@@ -15,7 +15,7 @@ const IncomeTransactions = ({ setShowModal }) => {
 
   const { mutate } = useMutation(
     (id) => {
-      return deleteExpense(id);
+      return deleteIncome(id);
     },
     {
       onSuccess: () => queryClient.invalidateQueries('income'),
@@ -27,11 +27,10 @@ const IncomeTransactions = ({ setShowModal }) => {
 
   if (loading) return <p>loading...</p>;
   if (errors) return <p>Something has gone wrong please try again later</p>;
-  if (editing)
-    return <EditExpense setEditing={setEditing} item={currentItem} />;
+  if (editing) return <EditIncome setEditing={setEditing} item={currentItem} />;
   return (
     <section className="h-full flex flex-col justify-evenly relative">
-      <h2 className="text-center py-3">Recent Expenses</h2>
+      <h2 className="text-center py-3">Recent Income</h2>
       <div className="grid grid-cols-6 overflow-x-scroll gap-2 text-center">
         {recent?.map((item) => {
           return (
@@ -65,7 +64,7 @@ const IncomeTransactions = ({ setShowModal }) => {
         onClick={() => setShowModal(true)}
         className="border-2 m-auto my-2 border-gray-400 rounded-md hover:shadow-md transform hover:-translate-x-1 p-2 text-center w-1/6"
       >
-        Add Expense
+        Add Income
       </div>
     </section>
   );

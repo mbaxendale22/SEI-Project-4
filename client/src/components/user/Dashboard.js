@@ -4,11 +4,11 @@ import { menuIcon } from '../../assets/menuIcon';
 import { getUser } from '../../lib/api/PE.js';
 import DashboardData from './DashboardData';
 import Sidebar from '../UI/Sidebar';
-import PersonalExpenses from './PersonalExpenses';
-import PersonalIncome from './PersonalIncome';
+import PersonalExpenses from '../expenses/PersonalExpenses';
+import PersonalIncome from '../income/PersonalIncome';
 import PersonalAssets from './PersonalAssets';
-import PersonalExpensesData from './PersonalExpensesData';
-import PersonalIncomeData from './PersonalIncomeData';
+import PersonalExpensesData from '../expenses/PersonalExpensesData';
+import PersonalIncomeData from '../income/PersonalIncomeData';
 
 const Dashboard = () => {
   const { data, isLoading, isError } = useQuery('userData', getUser);
@@ -55,7 +55,7 @@ const Dashboard = () => {
           {navigate === 3 && <PersonalAssets user={data} />}
         </div>
       </div>
-      {navigate === 0 && (
+      {navigate === 2 && (
         <div className="reveal-page hide-page">
           <PersonalExpensesData />
         </div>
