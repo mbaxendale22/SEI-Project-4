@@ -2,13 +2,13 @@ import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-const IncomeDonut = (salary, selling, passive, misc) => {
+const IncomeDonut = (paycheck, selling, passive, misc) => {
   const donut = {
-    labels: ['Salary', 'Selling', 'Passive', 'Misc'],
+    labels: ['Paycheck', 'Selling', 'Passive', 'Misc'],
     datasets: [
       {
         label: '# of Votes',
-        data: [salary, selling, passive, misc],
+        data: [paycheck, selling, passive, misc],
         backgroundColor: [
           'rgba(255, 99, 132, 0.2)',
           'rgba(54, 162, 235, 0.2)',

@@ -1,19 +1,21 @@
 import React from 'react';
 import { useQuery } from 'react-query';
-import { getCategories } from '../../lib/api/PE.js';
 import { Doughnut } from 'react-chartjs-2';
 import IncomeDonut from '../charts/IncomeDonut';
 import { reverseDate } from '../../helpers/rendering';
 import { doubleChevUp } from '../../assets/doublechev';
-import { getTotalExpenses } from '../../lib/api/PE.js';
-import { getIncomeCategories, getLargestIncome } from '../../lib/api/PI.js';
+import {
+  getIncomeCategories,
+  getLargestIncome,
+  getTotalIncome,
+} from '../../lib/api/PI.js';
 
 const PersonalIncomeData = ({ move }) => {
   const { data: cat, isLoading } = useQuery(
     'incomeCategories',
     getIncomeCategories
   );
-  const { data: total } = useQuery('total', getTotalExpenses);
+  const { data: total } = useQuery('total', getTotalIncome);
   const { data: largest, isLoading: loadingLargest } = useQuery(
     'largestIncome',
     getLargestIncome
@@ -27,7 +29,7 @@ const PersonalIncomeData = ({ move }) => {
     });
   };
 
-  console.log(largest);
+  console.log(cat);
 
   if (loadingLargest) return <p>Loading...</p>;
 
@@ -38,13 +40,13 @@ const PersonalIncomeData = ({ move }) => {
       </span>
       <div>
         <div>
-          <p>THIS IS A DIFFERENT PAGE BUT WITH THE SAME DATA FOR NOW</p>
+          <p className="text-center">Your total income this month</p>
           <p className="bg-primary w-1/3 text-center m-auto text-white shadow-sm rounded-md p-2">
             £{total}
           </p>
         </div>
         <div className="p-4">
-          <p>Your largest expense this month:</p>
+          <p>Your largest income this month:</p>
           {!isLoading && (
             <div className="flex gap-2 mt-4">
               <p className="bg-primary text-white shadow-sm rounded-md p-2">
@@ -66,7 +68,7 @@ const PersonalIncomeData = ({ move }) => {
           <p>Loading your data...</p>
         ) : (
           <Doughnut
-            data={IncomeDonut(cat.Salary, cat.Selling, cat.Passive, cat.Misc)}
+            data={IncomeDonut(cat.Paycheck, cat.Selling, cat.Passive, cat.Misc)}
           />
         )}
       </div>

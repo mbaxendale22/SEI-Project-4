@@ -104,7 +104,6 @@ class PIMonthlyTotal(APIView):
             amounts = []
             for transaction in pi:
                 amounts.append(transaction['amount'])
-                print(transaction['amount'])
             total = reduce((lambda x, y: x + y), amounts)
         except:
             return Response(status=status.HTTP_404_NOT_FOUND)
@@ -130,11 +129,11 @@ class PISpendingByCategory(APIView):
         try:
             pe = Personal_Income.objects.filter(user=user).values()
 
-            Salary = list(filter(lambda x: x.get('category') == 'Salary', pe ))
+            Paycheck = list(filter(lambda x: x.get('category') == 'Paycheck', pe ))
             Selling = list(filter(lambda x: x.get('category') == 'Selling', pe ))
             Passive = list(filter(lambda x: x.get('category') == 'Passive', pe ))
             Misc = list(filter(lambda x: x.get('category') == 'Misc', pe ))
-            categories = [Salary, Selling, Passive, Misc]
+            categories = [Paycheck, Selling, Passive, Misc]
             total_amount= {}
         
             def get_amounts(category):
