@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { Doughnut } from 'react-chartjs-2';
 import { useQuery } from 'react-query';
 import { getCategories } from '../../lib/api/PE.js';
@@ -18,9 +19,11 @@ const DashboardData = ({ user }) => {
         {user?.household ? (
           <div>Your household number is {user?.household}</div>
         ) : (
-          <div className=" border-primary border-2 p-1 rounded-md shadow-sm text-center text-black">
-            Join or create a household
-          </div>
+          <Link to="/manage-household">
+            <div className=" border-primary border-2 p-1 rounded-md shadow-sm text-center text-black">
+              Join or create a household
+            </div>
+          </Link>
         )}
       </div>
       <div>
