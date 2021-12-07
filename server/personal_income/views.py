@@ -9,7 +9,6 @@ from functools import reduce
 
 class PIUserView(APIView):
     def get(self, request, user):
-        print('********* hitting the correct view' + user)
         try: 
             pi = Personal_Income.objects.filter(user=user)
             print(pi)
