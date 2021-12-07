@@ -67,7 +67,6 @@ class PERecentView(APIView):
         try:
             pe = Personal_Expenses.objects.filter(owner=own).order_by('-date')
             serialized_pe = PESerializer(pe, many=True)
-            print(serialized_pe)
         except:
             return Response(status=status.HTTP_404_NOT_FOUND)
         return Response(serialized_pe.data, status=status.HTTP_200_OK)

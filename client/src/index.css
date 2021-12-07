@@ -17,5 +17,11 @@
   .transaction-btn {
     @apply border-2 border-gray-400 hover:shadow-md w-3/4 rounded-md transform hover:-translate-x-1
   }
+  .show-page {
+    @apply h-screen flex flex-col items-center justify-evenly
+  }
+  .hide-page {
+    @apply h-screen hidden
+  }
   
 }

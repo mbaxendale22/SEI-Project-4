@@ -1,33 +1,34 @@
 import React, { useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
-import { postExpenses } from '../../lib/api';
+import { updateExpense } from '../../lib/api';
 
-const AddExpense = ({ setShowModal }) => {
+const EditExpense = ({ setEditing, item }) => {
   const queryClient = useQueryClient();
   //access the userdata from the cache
   const user = queryClient.getQueryData(['userData']);
 
   const [expense, setExpense] = useState({
-    name: '',
-    category: '',
-    amount: '',
-    date: '',
-    share: 'false',
-    resolved: 'false',
+    name: item.name,
+    category: item.category,
+    amount: item.amount,
+    date: item.date,
+    share: item.share,
+    resolved: item.resolved,
     owner: user.id,
     creator: user.id,
   });
 
-  const { mutate } = useMutation(postExpenses, {
+  const { mutate } = useMutation(() => updateExpense(item.id, expense), {
     onSuccess: () => {
-      setShowModal(false);
+      queryClient.invalidateQueries('recent');
+      queryClient.invalidateQueries('largest');
+      setEditing(false);
     },
   });
 
   const handleChange = (e) => {
     const newExpense = { ...expense, [e.target.name]: e.target.value };
     setExpense(newExpense);
-    console.log(newExpense);
   };
 
   const handleSubmit = async (e) => {
@@ -42,7 +43,7 @@ const AddExpense = ({ setShowModal }) => {
           onChange={handleChange}
           type="text"
           name="name"
-          placeholder="name"
+          placeholder={item.name}
           className="border-primary border-b-2 focus:outline-none"
         ></input>
         <select
@@ -52,7 +53,7 @@ const AddExpense = ({ setShowModal }) => {
           placeholder="category"
           className="border-primary border-b-2 focus:outline-none"
         >
-          <option>choose category</option>
+          <option>{item.category}</option>
           <option value="bills">Bills</option>
           <option value="dining">Eating Out</option>
           <option value="entertainment">Entertainment</option>
@@ -66,14 +67,14 @@ const AddExpense = ({ setShowModal }) => {
           onChange={handleChange}
           type="text"
           name="amount"
-          placeholder="amount"
+          placeholder={item.amount}
           className="border-primary border-b-2 focus:outline-none"
         ></input>
         <input
           onChange={handleChange}
           type="date"
           name="date"
-          placeholder="date"
+          value={item.date}
           className="border-primary border-b-2 focus:outline-none"
         ></input>
         <div className="flex items-center justify-between">
@@ -97,7 +98,7 @@ const AddExpense = ({ setShowModal }) => {
           <button className="transaction-btn w-1/4 text-center">Save</button>
           <div
             className="transaction-btn w-1/4 text-center"
-            onClick={() => setShowModal(false)}
+            onClick={() => setEditing(false)}
           >
             Go Back
           </div>
@@ -107,4 +108,4 @@ const AddExpense = ({ setShowModal }) => {
   );
 };
 
-export default AddExpense;
+export default EditExpense;
