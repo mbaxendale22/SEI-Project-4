@@ -9,6 +9,7 @@ import PersonalIncome from '../income/PersonalIncome';
 import PersonalAssets from './PersonalAssets';
 import PersonalExpensesData from '../expenses/PersonalExpensesData';
 import PersonalIncomeData from '../income/PersonalIncomeData';
+import Household from '../household/Household';
 
 const Dashboard = () => {
   const { data, isLoading, isError } = useQuery('userData', getUser);
@@ -53,6 +54,7 @@ const Dashboard = () => {
           {navigate === 1 && <PersonalIncome user={data} move={move} />}
           {navigate === 2 && <PersonalExpenses user={data} move={move} />}
           {navigate === 3 && <PersonalAssets user={data} />}
+          {navigate === 4 && <Household user={data} move={move} />}
         </div>
       </div>
       {navigate === 2 && (
@@ -63,6 +65,11 @@ const Dashboard = () => {
       {navigate === 1 && (
         <div className="reveal-page hide-page">
           <PersonalIncomeData />
+        </div>
+      )}
+      {navigate === 4 && (
+        <div className="reveal-page hide-page">
+          <PersonalExpensesData />
         </div>
       )}
     </>

@@ -41,7 +41,7 @@ const Sidebar = ({ setNavigate, showSideBar }) => {
           Assets
         </div>
         <div
-          to="/household"
+          onClick={() => handleClick(4)}
           className="hover:bg-red-300 w-full p-2 text-center"
         >
           Household
