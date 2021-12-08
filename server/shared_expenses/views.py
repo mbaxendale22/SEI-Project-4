@@ -74,15 +74,17 @@ class SEDetailView(APIView):
         try:
         #    house_members = User.objects.filter(household=request.data['household']).exclude(id=request.data['creator']) # grab the other members of the household from the User model, exlude the current user from the list 
             pe = Personal_Expenses.objects.get(id=pk)
+           
 
-            household = Household_Expenses.objects.filter(
-            creator=request.data['creator'],
-            name=request.data['name'],
-            category=request.data['category'], 
-            date=request.data['date'],
-            household=request.data['household']
-            )
+            # household = Household_Expenses.objects.filter(
+            # creator=request.data['creator'],
+            # name=request.data['name'],
+            # category=request.data['category'], 
+            # date=request.data['date'],
+            # household=request.data['household']
+            # )
             
+            # print(household)
 
             pse = Personal_Expenses.objects.filter(
             creator=request.data['creator'],
@@ -94,7 +96,7 @@ class SEDetailView(APIView):
 
             pe.delete()
             pse.delete()
-            household.delete()
+            # household.delete()
 
         except:
             return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)

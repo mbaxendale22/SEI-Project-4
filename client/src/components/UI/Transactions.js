@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { getRecentExpenses } from '../../lib/api/PE.js';
 import { useQuery, useMutation, useQueryClient } from 'react-query';
 import { isResolved, reverseDate } from '../../helpers/rendering';
-import { deleteExpense } from '../../lib/api/PE.js';
+import { deleteExpense, deleteSharedExpense } from '../../lib/api/PE.js';
 import EditExpense from '../expenses/EditExpense';
 const Transactions = ({ setShowModal }) => {
   const queryClient = useQueryClient();
@@ -12,7 +12,7 @@ const Transactions = ({ setShowModal }) => {
     isLoading: loading,
   } = useQuery('recent', getRecentExpenses);
 
-  const { mutate } = useMutation(
+  const { mutate: notShared } = useMutation(
     (id) => {
       return deleteExpense(id);
     },
@@ -20,6 +20,18 @@ const Transactions = ({ setShowModal }) => {
       onSuccess: () => queryClient.invalidateQueries('recent'),
     }
   );
+  const { mutate: shared } = useMutation(
+    (id) => {
+      return deleteSharedExpense(id);
+    },
+    {
+      onSuccess: () => queryClient.invalidateQueries('recent'),
+    }
+  );
+
+  const deleteThisExpense = (item) => {
+    item.share === true ? shared(item) : notShared(item.id);
+  };
 
   const [editing, setEditing] = useState(false);
   const [currentItem, setCurrentItem] = useState({});
@@ -61,7 +73,7 @@ const Transactions = ({ setShowModal }) => {
                 edit
               </div>
               <div
-                onClick={() => mutate(item.id)}
+                onClick={() => deleteThisExpense(item)}
                 className="border-2 border-gray-400 hover:shadow-md w-3/4 rounded-md transform hover:-translate-x-1"
               >
                 delete
