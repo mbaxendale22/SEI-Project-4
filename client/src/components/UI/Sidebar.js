@@ -38,7 +38,7 @@ const Sidebar = ({ setNavigate, showSideBar }) => {
           onClick={() => handleClick(3)}
           className="hover:bg-red-300 w-full p-2 text-center"
         >
-          Assets
+          Savings
         </div>
         <div
           onClick={() => handleClick(4)}

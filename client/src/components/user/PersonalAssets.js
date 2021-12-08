@@ -6,8 +6,10 @@ const PersonalAssets = ({ user }) => {
     <div className="h-screen w-full flex flex-col justify-center">
       <h2 className="text-center">{user.username}'s savings</h2>
       <div className="dashboard-btn">Create a New Savings Pot</div>
-      <div className="flex">
-        <SavingsPot />
+      <div className="grid h-1/2 grid-cols-3">
+        <SavingsPot user={user} />
+        <SavingsPot user={user} />
+        <SavingsPot user={user} />
       </div>
     </div>
   );
