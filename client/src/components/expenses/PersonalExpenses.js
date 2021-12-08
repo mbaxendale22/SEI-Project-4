@@ -18,7 +18,7 @@ const PersonalExpenses = ({ user, move }) => {
           {showModal ? (
             <AddExpense setShowModal={setShowModal} />
           ) : (
-            <Transactions setShowModal={setShowModal} />
+            <Transactions setShowModal={setShowModal} user={user} />
           )}
         </div>
         <p>See An Overview of This Month's Expenses</p>

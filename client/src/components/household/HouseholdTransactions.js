@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
-import { getRecentExpenses } from '../../lib/api/PE.js';
-import { useQuery, useQueryClient } from 'react-query';
+import { useQuery } from 'react-query';
 import { isHouseholdResolved, reverseDate } from '../../helpers/rendering';
 import { getRecentHouseExpenses } from '../../lib/api/household.js';
-const HouseholdTransactions = ({ setShowModal, householdInfo }) => {
+const HouseholdTransactions = ({ householdInfo }) => {
   const [showUnresolved, setShowUnresolved] = useState(false);
 
   const {

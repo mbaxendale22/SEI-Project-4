@@ -4,13 +4,16 @@ import { useQuery, useMutation, useQueryClient } from 'react-query';
 import { isResolved, reverseDate } from '../../helpers/rendering';
 import { deleteExpense, deleteSharedExpense } from '../../lib/api/PE.js';
 import EditExpense from '../expenses/EditExpense';
-const Transactions = ({ setShowModal }) => {
+
+const Transactions = ({ setShowModal, user }) => {
+  const [expenseToDelete, setExpenseToDelete] = useState();
+  const [confirmation, setconfirmation] = useState(true);
   const queryClient = useQueryClient();
   const {
     data: recent,
     isError: errors,
     isLoading: loading,
-  } = useQuery('recent', getRecentExpenses);
+  } = useQuery(['recent'], getRecentExpenses);
 
   const { mutate: notShared } = useMutation(
     (id) => {
@@ -21,16 +24,27 @@ const Transactions = ({ setShowModal }) => {
     }
   );
   const { mutate: shared } = useMutation(
-    (id) => {
-      return deleteSharedExpense(id);
+    () => {
+      deleteSharedExpense(user, expenseToDelete);
     },
     {
-      onSuccess: () => queryClient.invalidateQueries('recent'),
+      onSuccess: () => {
+        setconfirmation(true);
+        queryClient.invalidateQueries('recent');
+      },
     }
   );
 
+  console.log(recent);
+
   const deleteThisExpense = (item) => {
-    item.share === true ? shared(item) : notShared(item.id);
+    setconfirmation(false);
+    setExpenseToDelete(item);
+  };
+  const confirmThisExpense = () => {
+    expenseToDelete.share === true
+      ? shared(user, expenseToDelete)
+      : notShared(expenseToDelete.id);
   };
 
   const [editing, setEditing] = useState(false);
@@ -72,12 +86,21 @@ const Transactions = ({ setShowModal }) => {
               >
                 edit
               </div>
-              <div
-                onClick={() => deleteThisExpense(item)}
-                className="border-2 border-gray-400 hover:shadow-md w-3/4 rounded-md transform hover:-translate-x-1"
-              >
-                delete
-              </div>
+              {confirmation ? (
+                <div
+                  onClick={() => deleteThisExpense(item)}
+                  className="border-2 border-gray-400 hover:shadow-md w-3/4 rounded-md transform hover:-translate-x-1"
+                >
+                  delete
+                </div>
+              ) : (
+                <div
+                  onClick={confirmThisExpense}
+                  className="border-2 border-primary hover:shadow-md w-3/4 rounded-md transform hover:-translate-x-1"
+                >
+                  confirm
+                </div>
+              )}
             </>
           );
         })}

@@ -75,16 +75,17 @@ class SEDetailView(APIView):
         #    house_members = User.objects.filter(household=request.data['household']).exclude(id=request.data['creator']) # grab the other members of the household from the User model, exlude the current user from the list 
             pe = Personal_Expenses.objects.get(id=pk)
            
+            pe.delete()
 
-            # household = Household_Expenses.objects.filter(
-            # creator=request.data['creator'],
-            # name=request.data['name'],
-            # category=request.data['category'], 
-            # date=request.data['date'],
-            # household=request.data['household']
-            # )
+            household = Household_Expenses.objects.filter(
+            creator=request.data['creator'],
+            name=request.data['name'],
+            category=request.data['category'], 
+            date=request.data['date'],
+            household=request.data['household']
+            )
             
-            # print(household)
+            household.delete()
 
             pse = Personal_Expenses.objects.filter(
             creator=request.data['creator'],
@@ -94,9 +95,7 @@ class SEDetailView(APIView):
             )
 
 
-            pe.delete()
             pse.delete()
-            # household.delete()
 
         except:
             return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
@@ -173,3 +172,34 @@ class SEDetailView(APIView):
                 updated_shared_personal_expense.save()
 
         return Response(status=status.HTTP_201_CREATED)
+
+
+class SEResolveView(APIView):
+     def put(self, request, pk):
+        house_members = User.objects.filter(household=request.data['household']).exclude(id=request.data['creator']) # grab the other members of the household from the User model, exlude the current user from the list
+        serialized_house_members = UserSerializer(house_members, many=True)
+        h_list = list(serialized_house_members.data) #return the query as a list, will use for looping through later 
+
+        owners_personal_expense = Personal_Expenses.objects.get(id=pk)
+        owners_personal_expense_to_update = Personal_Expenses.objects.filter(id=pk).update(resolved=True)
+        print(owners_personal_expense)
+
+        household_expense = Household_Expenses.objects.filter(
+            creator=owners_personal_expense.creator,
+            name=owners_personal_expense.name,
+            category=owners_personal_expense.category, 
+            date=owners_personal_expense.date,
+            ).update(resolved=True)
+#use the query list to send a post request to the personal_expenses table for each user in it 
+        for index, person in enumerate(h_list):
+            
+            shared_personal_expense = Personal_Expenses.objects.filter(
+            creator=owners_personal_expense.creator,
+            owner=h_list[index]['id'],
+            name=owners_personal_expense.name,
+            category=owners_personal_expense.category, 
+            date=owners_personal_expense.date
+            ).update(resolved=True)
+
+        return Response(status=status.HTTP_201_CREATED)
+    
