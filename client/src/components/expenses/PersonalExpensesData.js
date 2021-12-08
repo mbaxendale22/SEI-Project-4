@@ -51,9 +51,11 @@ const PersonalExpensesData = ({ move }) => {
             <p className="bg-primary text-white shadow-sm rounded-md p-2">
               £{largest[0]?.amount}
             </p>
-            <p className="bg-primary text-white shadow-sm rounded-md p-2">
-              {reverseDate(largest[0]?.date)}
-            </p>
+            {largest.length && (
+              <p className="bg-primary text-white shadow-sm rounded-md p-2">
+                {reverseDate(largest[0]?.date)}
+              </p>
+            )}
           </div>
         </div>
       </div>

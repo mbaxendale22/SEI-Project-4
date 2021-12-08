@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
-import { useMutation } from 'react-query';
+import { useMutation, useQueryClient } from 'react-query';
 import { useHistory, Link } from 'react-router-dom';
 import { postHousehold, updateUserHousehold } from '../../lib/api/household';
 
 const Manage = () => {
+  const queryClient = useQueryClient();
+
   const history = useHistory();
   const [createToggle, setCreateToggle] = useState(false);
   const [joinToggle, setJoinToggle] = useState(false);
@@ -18,7 +20,7 @@ const Manage = () => {
   // create new household and return its primary key for assigning to the user
   const { mutate, data } = useMutation(postHousehold, {
     onSuccess: (data) => {
-      setCreateToggle(!createToggle);
+      setCreateToggle(true);
       setId({ household: data.id });
     },
   });
@@ -51,7 +53,8 @@ const Manage = () => {
 
   const { mutate: joinHoushold } = useMutation(updateUserHousehold, {
     onSuccess: () => {
-      setJoinToggle(!joinToggle);
+      setJoinToggle(true);
+      queryClient.invalidateQueries(['userData']);
     },
   });
 
@@ -65,7 +68,6 @@ const Manage = () => {
   const changeHousehold = (e) => {
     const changeId = { ...newHousehold, [e.target.name]: e.target.value };
     setNewHousehold(changeId);
-    console.log(changeId);
   };
 
   //toggle showing the update/join household form
@@ -85,7 +87,7 @@ const Manage = () => {
           <div onClick={showCreateForm} className="alt-btn text-center ">
             Create a new household
           </div>
-          {createToggle && data ? (
+          {createToggle ? (
             <div className="h-64">
               <div className="text-center text-lg">Confirm new household?</div>
               <div
@@ -118,7 +120,7 @@ const Manage = () => {
           <div onClick={showJoinForm} className="alt-btn text-center ">
             Join a household or update yours
           </div>
-          {joinToggle && data ? (
+          {joinToggle ? (
             <div className="h-64">
               <div className="text-center text-lg">Success!</div>
               <Link to="/dashboard">

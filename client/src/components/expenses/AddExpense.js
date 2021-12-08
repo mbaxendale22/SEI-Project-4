@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
-import { postExpenses } from '../../lib/api/PE.js';
+import { postExpenses, postSharedExpenses } from '../../lib/api/PE.js';
 
 const AddExpense = ({ setShowModal }) => {
   const queryClient = useQueryClient();
@@ -14,25 +14,42 @@ const AddExpense = ({ setShowModal }) => {
     date: '',
     share: 'false',
     resolved: 'false',
+    household: user.household,
     owner: user.id,
     creator: user.id,
   });
 
-  const { mutate } = useMutation(postExpenses, {
+  const { mutate: notShared } = useMutation(postExpenses, {
     onSuccess: () => {
+      queryClient.invalidateQueries('recent');
+      setShowModal(false);
+    },
+  });
+
+  const { mutate: shared } = useMutation(postSharedExpenses, {
+    onSuccess: () => {
+      queryClient.invalidateQueries('recent');
       setShowModal(false);
     },
   });
 
   const handleChange = (e) => {
-    const newExpense = { ...expense, [e.target.name]: e.target.value };
-    setExpense(newExpense);
-    console.log(newExpense);
+    let newExpense = {};
+    if (e.target.name === 'amount') {
+      newExpense = {
+        ...expense,
+        [e.target.name]: parseFloat(e.target.value),
+      };
+      setExpense(newExpense);
+    } else {
+      let newExpense = { ...expense, [e.target.name]: e.target.value };
+      setExpense(newExpense);
+    }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    mutate(expense);
+    expense.share === false ? notShared(expense) : shared(expense);
   };
 
   return (

@@ -14,6 +14,7 @@ from household_expenses.models import Household_Expenses
 class SEIndexView(APIView):
 
     def post(self, request):
+        print(request.data)
         house_members = User.objects.filter(household=request.data['household']).exclude(id=request.data['creator']) # grab the other members of the household from the User model, exlude the current user from the list
         serialized_house_members = UserSerializer(house_members, many=True)
         h_list = list(serialized_house_members.data) #return the query as a list, will use for looping through later 
