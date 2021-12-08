@@ -10,6 +10,7 @@ from household_assets.models import Household_Assets
 from household_assets.serializers import HASerializer
 from auth_jwt.models import User
 from auth_jwt.serializers import UserSerializer
+from functools import reduce
 
 class PASharedView(APIView):
     def post(self, request):
@@ -78,4 +79,65 @@ class PADetailView(APIView):
         except:
             return Response(status=status.HTTP_404_NOT_FOUND)
         return Response(serialized_pa.data, status=status.HTTP_200_OK)
+
+
+class PACreatePot(APIView):
+    def post(self, request):
+        try:
+            pa = PASerializer(data=request.data)
+        except:
+            return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        if pa.is_valid():
+            pa.save()
+            return Response(pa.data, status=status.HTTP_201_CREATED)
+        else: 
+            return Response(pa.errors, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
+
+
+class PAPotBalance(APIView):
+        # returns the total 'balance', requires the user Id and the name of the pot
+    def get(self, request, user):
+        try:
+            name = request.GET.get('name')
+            pa = Personal_Assets.objects.filter(user=user).values()
+        
+            pa_category = list(filter(lambda x: x.get('name') == name, pa))
+            pa_amounts = list(map(lambda x: x.get('amount'), pa_category))
+            pa_balance = reduce(lambda x, y: x + y, pa_amounts)
+        except:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        return Response( pa_balance, status=status.HTTP_200_OK)
+
+
+class PASavingsPot(APIView):
+    # returns a list of deposits to and withdrawls from  a given pot
+    def get(self, request, user):
+        try:
+            name = request.GET.get('name')
+            pa = Personal_Assets.objects.filter(user=user).values()
+        
+            pa_category = list(filter(lambda x: x.get('name') == name, pa))
+        except:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        return Response(pa_category, status=status.HTTP_200_OK)
+    
+    def delete(self, request, pk):
+        try:
+            pa = Personal_Assets.objects.get(id=pk)
+            pa.delete()
+        except:
+            return Response(status=status.HTTP_204_NO_CONTENT)
+            return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+    def put(self, request, pk):
+        try:
+            pa = Personal_Assets.objects.get(id=pk)
+            updated_pa = PASerializer(pa, data=request.data)
+        except:
+            return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        if updated_pa.is_valid():
+            updated_pa.save()
+            return Response(updated_pa.data, status=status.HTTP_202_ACCEPTED)
+        else: 
+            return Response(updated_pa.errors, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
 
