@@ -13,7 +13,7 @@ const Register = () => {
     password_confirmation: '',
   });
 
-  const { mutate } = useMutation(postRegister, {
+  const { mutate, isError } = useMutation(postRegister, {
     onSuccess: () => history.push('/login'),
   });
 
@@ -29,7 +29,7 @@ const Register = () => {
   };
 
   return (
-    <div className="bg-primary bg-opacity-90 h-screen flex flex-col justify-center items-center">
+    <div className="bg-primary bg-opacity-100 h-screen flex flex-col justify-center items-center">
       <form
         onSubmit={handleSubmit}
         className=" border-r-2 border-t-2 border-white shadow-md h-4/6 w-7/12 flex items-center justify-evenly flex-col"
@@ -43,7 +43,7 @@ const Register = () => {
             type="text"
             name="username"
             placeholder="username..."
-            className="rounded-md mt-3 p-1"
+            className="rounded-md mt-3 p-1 bg-primary border-b-2 focus:outline-none placeholder-white"
           ></input>
         </div>
         <div className="w-3/4 flex flex-col">
@@ -55,7 +55,7 @@ const Register = () => {
             type="email"
             name="email"
             placeholder="email..."
-            className=" rounded-md mt-3 p-1"
+            className=" rounded-md mt-3 p-1 bg-primary border-b-2 focus:outline-none placeholder-white"
           ></input>
         </div>
         <div className="w-3/4 flex flex-col">
@@ -67,7 +67,7 @@ const Register = () => {
             type="password"
             name="password"
             placeholder="password..."
-            className="rounded-md mt-3 p-1"
+            className="rrounded-md mt-3 p-1 bg-primary border-b-2 focus:outline-none placeholder-white"
           ></input>
         </div>
         <div className="w-3/4 flex flex-col">
@@ -79,10 +79,15 @@ const Register = () => {
             type="password"
             name="password_confirmation"
             placeholder="confirm password..."
-            className="rounded-md mt-3 p-1"
+            className="rounded-md mt-3 p-1 bg-primary border-b-2 focus:outline-none placeholder-white"
           ></input>
         </div>
         <button className="pr-btn bg-opacity-95 w-3/4 ">Sign Up</button>
+        {isError && (
+          <div className="pr-btn bg-opacity-95 w-3/4 bg-red-700 text-white">
+            Check your passwords match
+          </div>
+        )}
       </form>
       <div className="mt-8 w-full flex flex-col gap-3 items-center">
         <p className="text-black">Already signed up?</p>
