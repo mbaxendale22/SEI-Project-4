@@ -11,7 +11,7 @@ const Login = () => {
     password: '',
   });
 
-  const { mutate } = useMutation(postLogin, {
+  const { mutate, isError } = useMutation(postLogin, {
     onSuccess: () => {
       history.push('/dashboard');
     },
@@ -52,6 +52,11 @@ const Login = () => {
           ></input>
         </div>
         <button className="pr-btn bg-opacity-95 w-3/4 ">Sign In</button>
+        {isError && (
+          <div className="pr-btn bg-opacity-95 w-3/4 bg-red-700 text-white">
+            Incorrect email or password
+          </div>
+        )}
       </form>
       <div className="mt-8 w-full flex flex-col items-center space-y-3">
         <p className="text-white">Not signed up?</p>
