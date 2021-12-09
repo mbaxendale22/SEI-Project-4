@@ -1,7 +1,7 @@
 import { set } from 'js-cookie';
 import React, { useState, useEffect } from 'react';
 import { useQuery, useMutation, useQueryClient } from 'react-query';
-import { checkBalance, createSavingsPot } from '../../lib/api/SA';
+import { checkBalance, createSavingsPot, deletePot } from '../../lib/api/SA';
 import CreatePot from './CreatePot';
 
 const SavingsPot = ({ user, pot, setRender }) => {
@@ -64,6 +64,8 @@ const SavingsPot = ({ user, pot, setRender }) => {
     setWithdrawButton(true);
     mutate(withdraw);
   };
+
+  const { mutate: deleteCurrentPot } = useMutation(deletePot);
 
   if (!pot)
     return (
@@ -135,15 +137,13 @@ const SavingsPot = ({ user, pot, setRender }) => {
                 Confirm
               </div>
             )}
-            <div className="dashboard-btn px-4 mt-4">delete pot</div>
+            <div
+              onClick={() => deleteCurrentPot(pot)}
+              className="dashboard-btn px-4 mt-4"
+            >
+              delete pot
+            </div>
           </div>
-
-          {/* <div
-            onClick={() => setSeeTransactions(true)}
-            className="dashboard-btn px-4 text-center"
-          >
-            See Transactions
-          </div> */}
         </>
       )}
     </div>
