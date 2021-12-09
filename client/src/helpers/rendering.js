@@ -2,13 +2,13 @@
 export const isResolved = (item) => {
   if (item.share && item.resolved) {
     return (
-      <div className="md:border-2 md:border-green-400 text-green-400  w-3/4 rounded-md">
+      <div className="lg:border-2 md:border-green-400 text-green-400  w-3/4 rounded-md">
         resolved
       </div>
     );
   } else if (item.share && !item.resolved) {
     return (
-      <div className="md:border-2 md:border-primary text-primary w-3/4 rounded-md">
+      <div className="lg:border-2 md:border-primary text-primary w-3/4 rounded-md">
         unresolved
       </div>
     );
@@ -21,13 +21,13 @@ export const isResolved = (item) => {
 export const isHouseholdResolved = (item) => {
   if (item.resolved) {
     return (
-      <div className="md:border-2 md:border-green-400 text-green-400  w-3/4 rounded-md">
+      <div className="lg:border-2 md:border-green-400 text-green-400  w-3/4 rounded-md">
         resolved
       </div>
     );
   } else if (!item.resolved) {
     return (
-      <div className="md:border-2 md:border-primary text-primary w-3/4 rounded-md">
+      <div className="lg:border-2 md:border-primary text-primary w-3/4 rounded-md">
         unresolved
       </div>
     );

@@ -21,7 +21,7 @@ const HouseholdTransactions = ({ householdInfo }) => {
       {!showUnresolved ? (
         <>
           <h2 className="text-center py-3">Recent Household Expenses</h2>
-          <div className="grid grid-cols-5 overflow-x-scroll gap-2 text-center">
+          <div className="grid grid-cols-1 gap-1 justify-items-center sm:grid-cols-5 h-48 sm:max-h-64 sm:h-full overflow-x-scroll sm:gap-2 text-center border-2 border-b">
             {recent?.map((item) => {
               return (
                 <>
@@ -37,13 +37,14 @@ const HouseholdTransactions = ({ householdInfo }) => {
                   <div>£{item.amount}</div>
 
                   {isHouseholdResolved(item)}
+                  <hr className="border-t-2 border-dotted w-3/4 border-primary rounded-3xl my-4 sm:hidden" />
                 </>
               );
             })}
           </div>
           <div
             onClick={() => setShowUnresolved(true)}
-            className="border-2 m-auto my-2 border-gray-400 rounded-md hover:shadow-md transform duration-300 ease-in-out hover:-translate-x-1 p-2 text-center w-1/4"
+            className="border-2 m-auto my-2 border-gray-400 rounded-md hover:shadow-md transform duration-300 ease-in-out hover:-translate-x-1 p-2 text-center w-3/4 sm:w-1/4"
           >
             show only unresolved expenses
           </div>
@@ -51,7 +52,7 @@ const HouseholdTransactions = ({ householdInfo }) => {
       ) : (
         <>
           <h2 className="text-center py-3">Recent Household Expenses</h2>
-          <div className="grid grid-cols-5 overflow-x-scroll gap-2 text-center">
+          <div className="grid grid-cols-1 gap-1 justify-items-center sm:grid-cols-5 h-48 sm:max-h-64 sm:h-full overflow-x-scroll sm:gap-2 text-center border-2 border-b">
             {onlyUnresolved?.map((item) => {
               return (
                 <>
@@ -67,13 +68,14 @@ const HouseholdTransactions = ({ householdInfo }) => {
                   <div>£{item.amount}</div>
 
                   {isHouseholdResolved(item)}
+                  <hr className="border-t-2 border-dotted w-3/4 border-primary rounded-3xl my-4 sm:hidden" />
                 </>
               );
             })}
           </div>
           <div
             onClick={() => setShowUnresolved(false)}
-            className="border-2 m-auto my-2 border-gray-400 rounded-md hover:shadow-md transform duration-300 ease-in-out hover:-translate-x-1 p-2 text-center w-1/4"
+            className="border-2 m-auto my-2 border-gray-400 rounded-md hover:shadow-md transform duration-300 ease-in-out hover:-translate-x-1 p-2 text-center w-3/4 sm:w-1/4"
           >
             show all expenses
           </div>
