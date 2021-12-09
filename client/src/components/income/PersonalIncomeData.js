@@ -16,10 +16,11 @@ const PersonalIncomeData = ({ move }) => {
     getIncomeCategories
   );
   const { data: total } = useQuery('total', getTotalIncome);
-  const { data: largest, isLoading: loadingLargest } = useQuery(
-    'largestIncome',
-    getLargestIncome
-  );
+  const {
+    data: largest,
+    isLoading: loadingLargest,
+    isError,
+  } = useQuery('largestIncome', getLargestIncome);
 
   const moveBack = () => {
     window.scroll({
@@ -31,7 +32,7 @@ const PersonalIncomeData = ({ move }) => {
 
   console.log(cat);
 
-  if (loadingLargest) return <p>Loading...</p>;
+  if (loadingLargest || isLoading) return <p>Loading...</p>;
 
   return (
     <>
@@ -47,7 +48,7 @@ const PersonalIncomeData = ({ move }) => {
         </div>
         <div className="p-4">
           <p>Your largest income this month:</p>
-          {!isLoading && (
+          {largest.length && (
             <div className="flex gap-2 mt-4">
               <p className="bg-primary text-white shadow-sm rounded-md p-2">
                 {largest[0]?.name}
