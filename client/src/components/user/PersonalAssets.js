@@ -8,6 +8,7 @@ const PersonalAssets = ({ user }) => {
     'savings',
     getPotTransactions
   );
+  const [render, setRender] = useState(true);
 
   if (loadingTransactions) return <p>loading your savings...</p>;
   const names = transactions?.map((el) => el.name);
@@ -22,9 +23,9 @@ const PersonalAssets = ({ user }) => {
       <h2 className="text-center">{user.username}'s savings</h2>
       <div className="dashboard-btn">Create a New Savings Pot</div>
       <div className="grid h-1/2 grid-cols-3">
-        <SavingsPot pot={pots1} user={user} />
-        <SavingsPot pot={pots2} user={user} />
-        <SavingsPot pot={pots3} user={user} />
+        <SavingsPot pot={pots1} user={user} setRender={setRender} />
+        <SavingsPot pot={pots2} user={user} setRender={setRender} />
+        <SavingsPot pot={pots3} user={user} setRender={setRender} />
       </div>
     </div>
   );

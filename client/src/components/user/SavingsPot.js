@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
-import { useQuery, useMutation } from 'react-query';
+import { set } from 'js-cookie';
+import React, { useState, useEffect } from 'react';
+import { useQuery, useMutation, useQueryClient } from 'react-query';
 import { checkBalance, createSavingsPot } from '../../lib/api/SA';
+import CreatePot from './CreatePot';
 
-const SavingsPot = ({ user, pot }) => {
+const SavingsPot = ({ user, pot, setRender }) => {
   const today = new Date();
   const startDate = `${today.getFullYear()}-${
     today.getMonth() + 1
@@ -12,7 +14,7 @@ const SavingsPot = ({ user, pot }) => {
     ['balance', pot],
     () => checkBalance(pot)
   );
-
+  const queryClient = useQueryClient(['balance', pot]);
   const [deposit, setDeposit] = useState({
     name: pot,
     amount: 0,
@@ -44,8 +46,15 @@ const SavingsPot = ({ user, pot }) => {
     setWithdraw(newWithdraw);
   };
 
-  const { mutate, isLoading: savingTransaction } =
-    useMutation(createSavingsPot);
+  const { mutate, isLoading: savingTransaction } = useMutation(
+    createSavingsPot,
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries('balance', pot);
+        return setRender((render) => !render);
+      },
+    }
+  );
 
   const handleDeposit = () => {
     setDepositButton(true);
@@ -56,7 +65,11 @@ const SavingsPot = ({ user, pot }) => {
     mutate(withdraw);
   };
 
-  if (loadingBalance) return <p>loading your data...</p>;
+  if (!pot)
+    return (
+      <CreatePot setRender={setRender} startDate={startDate} user={user} />
+    );
+  if (loadingBalance) return <p>loading your savings pot...</p>;
 
   return (
     <div className="flex flex-col gap-5 items-center">
@@ -122,6 +135,7 @@ const SavingsPot = ({ user, pot }) => {
                 Confirm
               </div>
             )}
+            <div className="dashboard-btn px-4 mt-4">delete pot</div>
           </div>
 
           {/* <div

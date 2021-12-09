@@ -51,11 +51,13 @@ class PAIndexView(APIView):
 
 
 class PADetailView(APIView):
-
+    # view for deleting entire pot (not just one transaction)
     def delete(self, request, pk):
         try:
-            pa = Personal_Assets.objects.get(id=pk)
-            pa.delete()
+            name = request.GET.get('name')
+            pa = Personal_Assets.objects.filter(user=pk).filter(name=name).delete()
+            # single_pot = list(filter(lambda x: x.get('name') == name, pa)
+            print(pa)
         except:
             return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         return Response(status=status.HTTP_204_NO_CONTENT)
@@ -126,7 +128,6 @@ class PASavingsPot(APIView):
     def get(self, request, user):
         try:
             pa = Personal_Assets.objects.filter(user=user)
-            print(pa)
         
             serialized_pa = PASerializer(pa, many=True)
         except:
