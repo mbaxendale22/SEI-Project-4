@@ -9,6 +9,7 @@ import PersonalIncome from '../income/PersonalIncome';
 import PersonalAssets from './PersonalAssets';
 import PersonalExpensesData from '../expenses/PersonalExpensesData';
 import PersonalIncomeData from '../income/PersonalIncomeData';
+import HouseholdExpensesData from '../household/HouseholdExpensesData';
 import Household from '../household/Household';
 
 const Dashboard = () => {
@@ -69,7 +70,7 @@ const Dashboard = () => {
       )}
       {navigate === 4 && (
         <div className="reveal-page hide-page">
-          <PersonalExpensesData />
+          <HouseholdExpensesData />
         </div>
       )}
     </>

@@ -81,7 +81,7 @@ class HELastMonth(APIView):
             end = request.GET.get('end')
             house = request.GET.get('house')
             he = Household_Expenses.objects.filter(household=house).filter(date__gte=str(start), date__lte=str(end))
-            print(he)
+
             serialized_he = HESerializer(he, many=True)
         except:
             return Response(status=status.HTTP_404_NOT_FOUND)
@@ -93,12 +93,11 @@ class HEMonthlyTotal(APIView):
         try:
             start = request.GET.get('start')
             end = request.GET.get('end')
-            house = request.GET.get('house')
-            he = Household_Expenses.objects.filter(household=house).filter(date__gte=str(start), date__lte=str(end)).values()
+            owner = request.GET.get('owner')
+            he = Household_Expenses.objects.filter(creator=owner).filter(date__gte=str(start), date__lte=str(end)).values()
             amounts = []
             for transaction in he:
                 amounts.append(transaction['amount'])
-                print(transaction['amount'])
             total = reduce((lambda x, y: x + y), amounts)
         except:
             return Response(status=status.HTTP_404_NOT_FOUND)
@@ -110,8 +109,8 @@ class HELargestExpense(APIView):
         try:
             start = request.GET.get('start')
             end = request.GET.get('end')
-            house = request.GET.get('house')
-            he = Household_Expenses.objects.filter(household=house).filter(date__gte=str(start), date__lte=str(end)).order_by('-amount')
+            owner = request.GET.get('owner')
+            he = Household_Expenses.objects.filter(creator=owner).filter(date__gte=str(start), date__lte=str(end)).order_by('-amount')
             serialized_he =HESerializer(he, many=True)
         except:
             return Response(status=status.HTTP_404_NOT_FOUND)
@@ -124,8 +123,8 @@ class HESpendingByCategory(APIView):
         try:
             start = request.GET.get('start')
             end = request.GET.get('end')
-            house = request.GET.get('house')
-            he = Household_Expenses.objects.filter(household=house).filter(date__gte=str(start), date__lte=str(end)).order_by('-date').values()
+            owner = request.GET.get('owner')
+            he = Household_Expenses.objects.filter(creator=owner).filter(date__gte=str(start), date__lte=str(end)).order_by('-date').values()
 
             transport = list(filter(lambda x: x.get('category') == 'transport', he ))
             entertainment = list(filter(lambda x: x.get('category') == 'entertainment', he ))

@@ -5,17 +5,20 @@ import ExpensesDonut from '../charts/ExpensesDonut';
 import { reverseDate } from '../../helpers/rendering';
 import { doubleChevUp } from '../../assets/doublechev';
 import {
-  getTotalExpenses,
-  getLargestExpense,
-  getCategories,
-} from '../../lib/api/PE.js';
+  getHouseTotalExpenses,
+  getHouseLargestExpense,
+  getHouseCategories,
+} from '../../lib/api/household';
 
-const PersonalExpensesData = ({ move }) => {
-  const { data: cat, isLoading } = useQuery('categories', getCategories);
-  const { data: total } = useQuery('total', getTotalExpenses);
+const HouseholdExpensesData = ({ move }) => {
+  const { data: cat, isLoading } = useQuery(
+    'categoriesHousehold',
+    getHouseCategories
+  );
+  const { data: total } = useQuery('totalHousehold', getHouseTotalExpenses);
   const { data: largest, isLoading: stillLoading } = useQuery(
-    'largest',
-    getLargestExpense
+    'largestHoushold',
+    getHouseLargestExpense
   );
 
   const moveBack = () => {
@@ -25,6 +28,7 @@ const PersonalExpensesData = ({ move }) => {
       behavior: 'smooth',
     });
   };
+  console.log(largest);
 
   if (stillLoading) return <p>Loading...</p>;
 
@@ -80,4 +84,4 @@ const PersonalExpensesData = ({ move }) => {
   );
 };
 
-export default PersonalExpensesData;
+export default HouseholdExpensesData;

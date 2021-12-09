@@ -17,11 +17,11 @@ const HouseholdTransactions = ({ householdInfo }) => {
   const onlyUnresolved = recent.filter((ex) => !ex.resolved);
 
   return (
-    <section className="h-full flex flex-col justify-evenly relative">
+    <section className="h-full flex flex-col justify-evenly">
       {!showUnresolved ? (
         <>
           <h2 className="text-center py-3">Recent Household Expenses</h2>
-          <div className="grid grid-cols-5 h-64 overflow-x-scroll gap-2 text-center">
+          <div className="grid grid-cols-5 overflow-x-scroll gap-2 text-center">
             {recent?.map((item) => {
               return (
                 <>
@@ -51,7 +51,7 @@ const HouseholdTransactions = ({ householdInfo }) => {
       ) : (
         <>
           <h2 className="text-center py-3">Recent Household Expenses</h2>
-          <div className="grid grid-cols-5 h-64 overflow-x-scroll gap-2 text-center">
+          <div className="grid grid-cols-5 overflow-x-scroll gap-2 text-center">
             {onlyUnresolved?.map((item) => {
               return (
                 <>
