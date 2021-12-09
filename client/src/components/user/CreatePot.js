@@ -34,7 +34,7 @@ const CreatePot = ({ setRender, startDate, user }) => {
         Create New Pot
       </div>
       {toggle && (
-        <div className="flex flex-col gap-4 ">
+        <div className="flex flex-col gap-4">
           <label>Just pick a name to get started</label>
           <input
             onChange={watchCreatePot}

@@ -19,10 +19,9 @@ const PersonalAssets = ({ user }) => {
   const pot3 = transactions.filter((x) => x.name === pots3);
 
   return (
-    <div className="h-screen w-full flex flex-col justify-center">
-      <h2 className="text-center">{user.username}'s savings</h2>
-      <div className="dashboard-btn">Create a New Savings Pot</div>
-      <div className="grid h-1/2 grid-cols-3">
+    <div className="h-screen w-full flex flex-col gap-20 items-center justify-center">
+      <h2 className="text-center text-2xl">{user.username}'s savings</h2>
+      <div className="grid w-full sm:w-3/4 h-1/2 grid-cols-1 overflow-x-scroll md:grid-cols-3 border-b-2 border-t-2 border-primary rounded-2xl">
         <SavingsPot pot={pots1} user={user} setRender={setRender} />
         <SavingsPot pot={pots2} user={user} setRender={setRender} />
         <SavingsPot pot={pots3} user={user} setRender={setRender} />

@@ -74,78 +74,66 @@ const SavingsPot = ({ user, pot, setRender }) => {
   if (loadingBalance) return <p>loading your savings pot...</p>;
 
   return (
-    <div className="flex flex-col gap-5 items-center">
-      {seeTransactions ? (
-        <>
-          <p>Hello</p>
-          <div
-            onClick={() => setSeeTransactions(false)}
-            className="dashboard-btn px-4 text-center"
-          >
-            Back
-          </div>
-        </>
-      ) : (
-        <>
-          <h2 className="text-lg">{pot}</h2>
-          <p>Current Balance:</p>
-          <p>£{balance}</p>
-          <div className="flex flex-col items-center gap-2">
-            <input
-              onChange={watchDeposit}
-              className="border-b-4 rounded-md border-primary focus:outline-none"
-              type="text"
-              name="amount"
-              placeholder="Enter amount..."
-            ></input>
-            {depositButton ? (
-              <div
-                onClick={() => setDepositButton(false)}
-                className="transaction-btn text-center"
-              >
-                Deposit
-              </div>
-            ) : (
-              <div
-                onClick={handleDeposit}
-                className="transaction-btn text-green-300 border-green-300 font-bold text-center"
-              >
-                Confirm
-              </div>
-            )}
-          </div>
-          <div className="flex flex-col items-center gap-2">
-            <input
-              onChange={watchWithdraw}
-              className="border-b-4 rounded-md border-primary focus:outline-none"
-              type="text"
-              name="amount"
-              placeholder="Enter amount..."
-            ></input>
-            {withdrawButton ? (
-              <div
-                onClick={() => setWithdrawButton(false)}
-                className="transaction-btn text-center"
-              >
-                Withdraw
-              </div>
-            ) : (
-              <div
-                onClick={handleWithdraw}
-                className="transaction-btn text-red-400 border-red-400 font-bold  text-center"
-              >
-                Confirm
-              </div>
-            )}
+    <div className="flex flex-col gap-3 items-center">
+      <>
+        <h2 className="text-lg">{pot}</h2>
+        <p>Current Balance:</p>
+        <p>£{balance}</p>
+        <div className="flex flex-col items-center gap-2">
+          <input
+            onChange={watchDeposit}
+            className="border-b-4 rounded-md border-primary focus:outline-none"
+            type="text"
+            name="amount"
+            placeholder="Enter amount..."
+          ></input>
+          {depositButton ? (
             <div
-              onClick={() => deleteCurrentPot(pot)}
-              className="dashboard-btn px-4 mt-4"
+              onClick={() => setDepositButton(false)}
+              className="transaction-btn text-center"
             >
-              delete pot
+              Deposit
             </div>
+          ) : (
+            <div
+              onClick={handleDeposit}
+              className="transaction-btn text-green-300 border-green-300 font-bold text-center"
+            >
+              Confirm
+            </div>
+          )}
+        </div>
+        <div className="flex flex-col items-center gap-3">
+          <input
+            onChange={watchWithdraw}
+            className="border-b-4 rounded-md border-primary focus:outline-none"
+            type="text"
+            name="amount"
+            placeholder="Enter amount..."
+          ></input>
+          {withdrawButton ? (
+            <div
+              onClick={() => setWithdrawButton(false)}
+              className="transaction-btn text-center"
+            >
+              Withdraw
+            </div>
+          ) : (
+            <div
+              onClick={handleWithdraw}
+              className="transaction-btn text-red-400 border-red-400 font-bold  text-center"
+            >
+              Confirm
+            </div>
+          )}
+          <div
+            onClick={() => deleteCurrentPot(pot)}
+            className="dashboard-btn px-4 mt-4"
+          >
+            delete pot
           </div>
-        </>
-      )}
+        </div>
+      </>
     </div>
   );
 };

@@ -12,11 +12,11 @@ const DashboardData = ({ user }) => {
   } = useQuery('householdInfo', () => getHouseholdInfo(user.household));
 
   return (
-    <div className="h-full w-full relative border-2 border-black flex flex-col gap-10 pt-12 items-center">
+    <div className="h-full w-full flex flex-col gap-10 pt-12 items-center">
       <div>
         <p className="text-3xl font-semibold">Welcome back {user?.username}</p>
       </div>
-      <div className="border-black border-2 flex flex-col items-center gap-5 w-full sm:w-2/3">
+      <div className="flex flex-col items-center gap-5 w-full sm:w-2/3">
         {houseName ? (
           <>
             <div>Your a member of {houseName?.name}</div>
@@ -56,7 +56,7 @@ const DashboardData = ({ user }) => {
           </p>
           <p>
             When you've settled up with your household members, mark the expense
-            as resolved to update everyone's personal finances
+            as resolved to update everyone's personal finances.
           </p>
           <p>
             Finally, keep track of household expenses in the dedicated household
