@@ -30,8 +30,6 @@ const PersonalIncomeData = ({ move }) => {
     });
   };
 
-  console.log(cat);
-
   if (loadingLargest || isLoading) return <p>Loading...</p>;
 
   return (

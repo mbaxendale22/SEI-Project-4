@@ -10,7 +10,6 @@ const HouseholdTransactions = ({ householdInfo }) => {
     isError: errors,
     isLoading: loading,
   } = useQuery('houseExpenses', () => getRecentHouseExpenses(householdInfo.id));
-  console.log(recent);
 
   if (loading) return <p>loading household expenses...</p>;
   if (errors) return <p>Something has gone wrong please try again later</p>;

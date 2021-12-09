@@ -19,10 +19,8 @@ class HAIndexView(APIView):
 
     def post(self, request):
         try:
-            print('hitting the correct view')
             house = User.objects.filter(id=request.data['user']).values()
             household = (house[0]['household_id'])
-            print(household)
             asset = {
                 "name": request.data['name'],
                 "category": request.data['category'],
@@ -31,7 +29,6 @@ class HAIndexView(APIView):
                 "household": household,
                 "owner": request.data['user']
             }
-            print(asset)
             ha = HASerializer(data=asset)
         except:
             return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)

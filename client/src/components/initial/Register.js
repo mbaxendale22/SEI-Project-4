@@ -25,7 +25,6 @@ const Register = () => {
   const handleChange = (e) => {
     const newRegister = { ...register, [e.target.name]: e.target.value };
     setRegister(newRegister);
-    console.log(newRegister);
   };
 
   return (

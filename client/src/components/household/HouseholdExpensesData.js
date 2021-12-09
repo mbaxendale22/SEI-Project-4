@@ -28,7 +28,6 @@ const HouseholdExpensesData = ({ move }) => {
       behavior: 'smooth',
     });
   };
-  console.log(largest);
 
   if (stillLoading) return <p>Loading...</p>;
 

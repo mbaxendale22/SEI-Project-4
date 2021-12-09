@@ -56,7 +56,6 @@ class PADetailView(APIView):
         try:
             name = request.GET.get('name')
             pa = Personal_Assets.objects.filter(user=pk).filter(name=name).delete()
-            print(pa)
         except:
             return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         return Response(status=status.HTTP_204_NO_CONTENT)
