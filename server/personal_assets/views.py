@@ -108,8 +108,7 @@ class PAPotBalance(APIView):
             return Response(status=status.HTTP_404_NOT_FOUND)
         return Response( pa_balance, status=status.HTTP_200_OK)
 
-
-class PASavingsPot(APIView):
+class PAIndividualPots(APIView):
     # returns a list of deposits to and withdrawls from  a given pot
     def get(self, request, user):
         try:
@@ -120,6 +119,19 @@ class PASavingsPot(APIView):
         except:
             return Response(status=status.HTTP_404_NOT_FOUND)
         return Response(pa_category, status=status.HTTP_200_OK)
+
+class PASavingsPot(APIView):
+
+    # returns all deposits and withdrawals from all a user's pots
+    def get(self, request, user):
+        try:
+            pa = Personal_Assets.objects.filter(user=user)
+            print(pa)
+        
+            serialized_pa = PASerializer(pa, many=True)
+        except:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        return Response(serialized_pa.data, status=status.HTTP_200_OK)
     
     def delete(self, request, pk):
         try:
