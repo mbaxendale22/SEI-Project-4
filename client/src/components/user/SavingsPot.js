@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import { useQuery, useMutation } from 'react-query';
-import { checkBalance, getPotTransactions } from '../../lib/api/SA';
-import { getIndividualPots } from '../../lib/api/SA';
-import savingsTransactions from './savingsTransactions';
+import { checkBalance, createSavingsPot } from '../../lib/api/SA';
 
 const SavingsPot = ({ user, pot }) => {
   const today = new Date();
@@ -10,23 +8,10 @@ const SavingsPot = ({ user, pot }) => {
     today.getMonth() + 1
   }-${today.getDay()}`;
   const [seeTransactions, setSeeTransactions] = useState(false);
-  const { data: balance, isLoading: loadingBalance } = useQuery('balance', () =>
-    checkBalance(pot)
+  const { data: balance, isLoading: loadingBalance } = useQuery(
+    ['balance', pot],
+    () => checkBalance(pot)
   );
-  // console.log(pots[index]);
-  // const { data: pot, isLoading: loadingPot } = useQuery('savings', () =>
-  //   getIndividualPots(pots[index])
-  // );
-
-  const watchDeposit = (e) => {
-    const newDeposit = { ...deposit, [e.target.name]: e.target.value };
-    setDeposit(newDeposit);
-  };
-  const watchWithdraw = (e) => {
-    const newWithdraw = { ...withdraw, [e.target.name]: e.target.value };
-    setWithdraw(newWithdraw);
-    console.log();
-  };
 
   const [deposit, setDeposit] = useState({
     name: pot,
@@ -41,10 +26,40 @@ const SavingsPot = ({ user, pot }) => {
     user: user.id,
   });
 
+  const [depositButton, setDepositButton] = useState(true);
+  const [withdrawButton, setWithdrawButton] = useState(true);
+
+  const watchDeposit = (e) => {
+    const newDeposit = {
+      ...deposit,
+      [e.target.name]: parseInt(e.target.value),
+    };
+    setDeposit(newDeposit);
+  };
+  const watchWithdraw = (e) => {
+    const newWithdraw = {
+      ...withdraw,
+      [e.target.name]: -Math.abs(parseInt(e.target.value)),
+    };
+    setWithdraw(newWithdraw);
+  };
+
+  const { mutate, isLoading: savingTransaction } =
+    useMutation(createSavingsPot);
+
+  const handleDeposit = () => {
+    setDepositButton(true);
+    mutate(deposit);
+  };
+  const handleWithdraw = () => {
+    setWithdrawButton(true);
+    mutate(withdraw);
+  };
+
   if (loadingBalance) return <p>loading your data...</p>;
 
   return (
-    <div className="border-black border-2 flex flex-col gap-5 items-center">
+    <div className="flex flex-col gap-5 items-center">
       {seeTransactions ? (
         <>
           <p>Hello</p>
@@ -60,32 +75,61 @@ const SavingsPot = ({ user, pot }) => {
           <h2 className="text-lg">{pot}</h2>
           <p>Current Balance:</p>
           <p>£{balance}</p>
-          <form className="flex flex-col items-center gap-2">
+          <div className="flex flex-col items-center gap-2">
             <input
-              onClick={watchDeposit}
+              onChange={watchDeposit}
               className="border-b-4 rounded-md border-primary focus:outline-none"
               type="text"
-              name="name"
+              name="amount"
               placeholder="Enter amount..."
             ></input>
-            <div className="transaction-btn text-center">Deposit</div>
-          </form>
-          <form className="flex flex-col items-center gap-2">
+            {depositButton ? (
+              <div
+                onClick={() => setDepositButton(false)}
+                className="transaction-btn text-center"
+              >
+                Deposit
+              </div>
+            ) : (
+              <div
+                onClick={handleDeposit}
+                className="transaction-btn text-green-300 border-green-300 font-bold text-center"
+              >
+                Confirm
+              </div>
+            )}
+          </div>
+          <div className="flex flex-col items-center gap-2">
             <input
-              onClick={watchWithdraw}
+              onChange={watchWithdraw}
               className="border-b-4 rounded-md border-primary focus:outline-none"
               type="text"
-              name="name"
+              name="amount"
               placeholder="Enter amount..."
             ></input>
-            <div className="transaction-btn text-center">Withdraw</div>
-          </form>
-          <div
+            {withdrawButton ? (
+              <div
+                onClick={() => setWithdrawButton(false)}
+                className="transaction-btn text-center"
+              >
+                Withdraw
+              </div>
+            ) : (
+              <div
+                onClick={handleWithdraw}
+                className="transaction-btn text-red-400 border-red-400 font-bold  text-center"
+              >
+                Confirm
+              </div>
+            )}
+          </div>
+
+          {/* <div
             onClick={() => setSeeTransactions(true)}
             className="dashboard-btn px-4 text-center"
           >
             See Transactions
-          </div>
+          </div> */}
         </>
       )}
     </div>

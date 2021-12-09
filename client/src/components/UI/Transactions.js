@@ -35,8 +35,6 @@ const Transactions = ({ setShowModal, user }) => {
     }
   );
 
-  console.log(recent);
-
   const deleteThisExpense = (item) => {
     setconfirmation(false);
     setExpenseToDelete(item);
