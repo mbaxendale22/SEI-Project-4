@@ -51,9 +51,9 @@ const SavingsPot = ({ user, pot, setRender }) => {
     createSavingsPot,
     {
       onSuccess: () => {
-        queryClient.invalidateQueries('savings');
+        // queryClient.invalidateQueries('savings');
         balanceClient.invalidateQueries('balance', pot);
-        deposit['amount'] = 0;
+        // deposit['amount'] = 0;
       },
     }
   );
