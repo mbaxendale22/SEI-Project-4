@@ -33,7 +33,7 @@ const CreatePot = ({ startDate, user }) => {
 
   return (
     <div className="flex flex-col items-center justify-center gap-10">
-      <p>Looks like you have a spare savings pot</p>
+      <p className="text-center">Looks like you have a spare savings pot</p>
       <div onClick={() => setToggle(true)} className="dashboard-btn px-4">
         Create New Pot
       </div>
