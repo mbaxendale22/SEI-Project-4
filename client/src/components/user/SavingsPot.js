@@ -9,12 +9,13 @@ const SavingsPot = ({ user, pot, setRender }) => {
   const startDate = `${today.getFullYear()}-${
     today.getMonth() + 1
   }-${today.getDay()}`;
-  const [seeTransactions, setSeeTransactions] = useState(false);
+
   const { data: balance, isLoading: loadingBalance } = useQuery(
     ['balance', pot],
     () => checkBalance(pot)
   );
-  const queryClient = useQueryClient(['balance', pot]);
+  const queryClient = useQueryClient(['savings']);
+  const balanceClient = useQueryClient(['balance', pot]);
   const [deposit, setDeposit] = useState({
     name: pot,
     amount: 0,
@@ -50,8 +51,9 @@ const SavingsPot = ({ user, pot, setRender }) => {
     createSavingsPot,
     {
       onSuccess: () => {
-        queryClient.invalidateQueries('balance', pot);
-        return setRender((render) => !render);
+        queryClient.invalidateQueries('savings');
+        balanceClient.invalidateQueries('balance', pot);
+        deposit['amount'] = 0;
       },
     }
   );
@@ -59,18 +61,27 @@ const SavingsPot = ({ user, pot, setRender }) => {
   const handleDeposit = () => {
     setDepositButton(true);
     mutate(deposit);
+    setRender();
+    const x = document.querySelector('.deposit');
+    x.value = '';
   };
   const handleWithdraw = () => {
     setWithdrawButton(true);
     mutate(withdraw);
+    const x = document.querySelector('.withdraw');
+    x.value = '';
   };
 
-  const { mutate: deleteCurrentPot } = useMutation(deletePot);
+  const { mutate: deleteCurrentPot } = useMutation(deletePot, {
+    onSuccess: () => queryClient.invalidateQueries('savings'),
+  });
 
-  if (!pot)
-    return (
-      <CreatePot setRender={setRender} startDate={startDate} user={user} />
-    );
+  const handleDelete = (value) => {
+    deleteCurrentPot(pot);
+    setRender();
+  };
+
+  if (!pot) return <CreatePot startDate={startDate} user={user} />;
   if (loadingBalance) return <p>loading your savings pot...</p>;
 
   return (
@@ -82,7 +93,7 @@ const SavingsPot = ({ user, pot, setRender }) => {
         <div className="flex flex-col items-center gap-2">
           <input
             onChange={watchDeposit}
-            className="border-b-4 rounded-md border-primary focus:outline-none"
+            className=" deposit border-b-4 rounded-md border-primary focus:outline-none"
             type="text"
             name="amount"
             placeholder="Enter amount..."
@@ -106,7 +117,7 @@ const SavingsPot = ({ user, pot, setRender }) => {
         <div className="flex flex-col items-center gap-3">
           <input
             onChange={watchWithdraw}
-            className="border-b-4 rounded-md border-primary focus:outline-none"
+            className="withdraw border-b-4 rounded-md border-primary focus:outline-none"
             type="text"
             name="amount"
             placeholder="Enter amount..."
@@ -127,7 +138,7 @@ const SavingsPot = ({ user, pot, setRender }) => {
             </div>
           )}
           <div
-            onClick={() => deleteCurrentPot(pot)}
+            onClick={() => handleDelete(false)}
             className="dashboard-btn px-4 mt-4"
           >
             delete pot

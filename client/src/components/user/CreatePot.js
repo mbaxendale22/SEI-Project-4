@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { useMutation } from 'react-query';
 import { createSavingsPot } from '../../lib/api/SA';
+import { useQueryClient } from 'react-query';
 
-const CreatePot = ({ setRender, startDate, user }) => {
+const CreatePot = ({ startDate, user }) => {
+  const queryClient = useQueryClient('savings');
   const [newPot, setNewPot] = useState({
     name: '',
     amount: 0,
@@ -12,7 +14,9 @@ const CreatePot = ({ setRender, startDate, user }) => {
 
   const [toggle, setToggle] = useState(false);
 
-  const { mutate } = useMutation(createSavingsPot);
+  const { mutate } = useMutation(createSavingsPot, {
+    onSuccess: () => queryClient.invalidateQueries('savings'),
+  });
 
   const watchCreatePot = (e) => {
     const newName = {
@@ -24,7 +28,7 @@ const CreatePot = ({ setRender, startDate, user }) => {
 
   const handleCreatePot = () => {
     mutate(newPot);
-    setRender((render) => !render);
+    setToggle(false);
   };
 
   return (

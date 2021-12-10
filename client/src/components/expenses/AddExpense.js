@@ -49,7 +49,8 @@ const AddExpense = ({ setShowModal }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    expense.share === false ? notShared(expense) : shared(expense);
+    console.log(expense.share);
+    expense.share === 'false' ? notShared(expense) : shared(expense);
   };
 
   return (

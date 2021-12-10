@@ -43,7 +43,7 @@ const HouseholdTransactions = ({ householdInfo }) => {
           </div>
           <div
             onClick={() => setShowUnresolved(true)}
-            className="border-2 m-auto my-2 border-gray-400 rounded-md hover:shadow-md transform duration-300 ease-in-out hover:-translate-x-1 p-2 text-center w-3/4 sm:w-1/4"
+            className="border-2 m-auto my-2 border-gray-400 rounded-md hover:shadow-md transform duration-300 ease-in-out hover:-translate-x-1 p-2 text-center w-3/4 sm:w-1/2"
           >
             show only unresolved expenses
           </div>

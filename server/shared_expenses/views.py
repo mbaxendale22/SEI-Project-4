@@ -12,6 +12,7 @@ from household_expenses.models import Household_Expenses
 
 
 class SEIndexView(APIView):
+    print('hitting the wrong endpoint')
 
     def post(self, request):
         house_members = User.objects.filter(household=request.data['household']).exclude(id=request.data['creator']) # grab the other members of the household from the User model, exlude the current user from the list

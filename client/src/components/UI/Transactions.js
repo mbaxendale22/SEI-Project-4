@@ -7,7 +7,7 @@ import EditExpense from '../expenses/EditExpense';
 
 const Transactions = ({ setShowModal, user }) => {
   const [expenseToDelete, setExpenseToDelete] = useState();
-  const [confirmation, setconfirmation] = useState(true);
+  const [confirmation, setConfirmation] = useState(true);
   const queryClient = useQueryClient();
   const {
     data: recent,
@@ -29,20 +29,20 @@ const Transactions = ({ setShowModal, user }) => {
     },
     {
       onSuccess: () => {
-        setconfirmation(true);
         queryClient.invalidateQueries('recent');
       },
     }
   );
 
   const deleteThisExpense = (item) => {
-    setconfirmation(false);
+    setConfirmation(false);
     setExpenseToDelete(item);
   };
   const confirmThisExpense = () => {
-    expenseToDelete.share === true
+    expenseToDelete.share === 'true'
       ? shared(user, expenseToDelete)
       : notShared(expenseToDelete.id);
+    setConfirmation(true);
   };
 
   const [editing, setEditing] = useState(false);
