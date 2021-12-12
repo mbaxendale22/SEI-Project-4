@@ -8,7 +8,6 @@ import {
 } from '../../lib/api/SA';
 
 const SavingsPot = ({ user, pot, setRender }) => {
-  const [test, setTest] = useState(false);
   const today = new Date();
   const startDate = `${today.getFullYear()}-${
     today.getMonth() + 1
@@ -20,12 +19,18 @@ const SavingsPot = ({ user, pot, setRender }) => {
     ['balance', pot[1]],
     () => getPot(pot[1])
   );
-
+  console.log(balance);
   const balanceClient = useQueryClient(['balance', pot[1]]);
 
   const { mutate: updateDeposit } = useMutation(makeDeposit, {
-    onSuccess: () =>
-      setTimeout(balanceClient.invalidateQueries(['balance', pot[1]]), 5000),
+    onMutate: (updatedBalance) => {
+      const { pot } = updatedBalance;
+      console.log(pot);
+      balanceClient.setQueryData(['balance', pot[1]], pot);
+    },
+    onSuccess: () => {
+      balanceClient.invalidateQueries(['balance', pot[1]]);
+    },
   });
   const { mutate: updateWithdraw } = useMutation(makeWithdrawl);
 
@@ -57,6 +62,7 @@ const SavingsPot = ({ user, pot, setRender }) => {
   const handleDeposit = () => {
     setDepositButton(true);
     updateDeposit({ id: pot[1], pot: deposit });
+    setRender();
     const x = document.querySelector('.deposit');
     x.value = '';
   };
