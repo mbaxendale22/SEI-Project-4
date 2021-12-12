@@ -7,7 +7,8 @@ import {
   getPot,
 } from '../../lib/api/SA';
 
-const SavingsPot = ({ user, pot, setRender, render }) => {
+const SavingsPot = ({ user, pot, setRender }) => {
+  const [test, setTest] = useState(false);
   const today = new Date();
   const startDate = `${today.getFullYear()}-${
     today.getMonth() + 1
@@ -71,7 +72,7 @@ const SavingsPot = ({ user, pot, setRender, render }) => {
   });
 
   const handleDelete = (value) => {
-    deleteCurrentPot(pot);
+    deleteCurrentPot(pot[1]);
     setRender();
   };
 
