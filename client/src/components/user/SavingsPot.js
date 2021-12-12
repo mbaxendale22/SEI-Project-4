@@ -1,29 +1,35 @@
-import { set } from 'js-cookie';
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from 'react-query';
-import { checkBalance, createSavingsPot, deletePot } from '../../lib/api/SA';
-import CreatePot from './CreatePot';
+import {
+  makeDeposit,
+  makeWithdrawl,
+  deletePot,
+  getPot,
+} from '../../lib/api/SA';
 
-const SavingsPot = ({ user, pot, setRender }) => {
+const SavingsPot = ({ user, pot, setRender, render }) => {
   const today = new Date();
   const startDate = `${today.getFullYear()}-${
     today.getMonth() + 1
   }-${today.getDate()}`;
 
-  const { data: balance, isLoading: loadingBalance } = useQuery(
-    ['balance', pot],
-    () => checkBalance(pot)
-  );
   const queryClient = useQueryClient(['savings']);
-  const balanceClient = useQueryClient(['balance', pot]);
-  const [deposit, setDeposit] = useState({
-    name: pot,
-    amount: 0,
-    date: startDate,
-    user: user.id,
+
+  const { data: balance, isLoading: loadingBalance } = useQuery(
+    ['balance', pot[1]],
+    () => getPot(pot[1])
+  );
+
+  const balanceClient = useQueryClient(['balance', pot[1]]);
+
+  const { mutate: updateDeposit } = useMutation(makeDeposit, {
+    onSuccess: () =>
+      setTimeout(balanceClient.invalidateQueries(['balance', pot[1]]), 5000),
   });
-  const [withdraw, setWithdraw] = useState({
-    name: pot,
+  const { mutate: updateWithdraw } = useMutation(makeWithdrawl);
+
+  const [deposit, setDeposit] = useState({
+    name: pot[0],
     amount: 0,
     date: startDate,
     user: user.id,
@@ -41,33 +47,21 @@ const SavingsPot = ({ user, pot, setRender }) => {
   };
   const watchWithdraw = (e) => {
     const newWithdraw = {
-      ...withdraw,
-      [e.target.name]: -Math.abs(parseInt(e.target.value)),
+      ...deposit,
+      [e.target.name]: parseInt(e.target.value),
     };
-    setWithdraw(newWithdraw);
+    setDeposit(newWithdraw);
   };
-
-  const { mutate, isLoading: savingTransaction } = useMutation(
-    createSavingsPot,
-    {
-      onSuccess: () => {
-        // queryClient.invalidateQueries('savings');
-        balanceClient.invalidateQueries('balance', pot);
-        // deposit['amount'] = 0;
-      },
-    }
-  );
 
   const handleDeposit = () => {
     setDepositButton(true);
-    mutate(deposit);
-    setRender();
+    updateDeposit({ id: pot[1], pot: deposit });
     const x = document.querySelector('.deposit');
     x.value = '';
   };
   const handleWithdraw = () => {
     setWithdrawButton(true);
-    mutate(withdraw);
+    updateWithdraw({ id: pot[1], pot: deposit });
     const x = document.querySelector('.withdraw');
     x.value = '';
   };
@@ -81,15 +75,14 @@ const SavingsPot = ({ user, pot, setRender }) => {
     setRender();
   };
 
-  if (!pot) return <CreatePot startDate={startDate} user={user} />;
   if (loadingBalance) return <p>loading your savings pot...</p>;
 
   return (
     <div className="flex flex-col gap-3 items-center">
       <>
-        <h2 className="text-lg">{pot}</h2>
+        <h2 className="text-lg">{pot[0]}</h2>
         <p>Current Balance:</p>
-        <p>£{balance}</p>
+        <p>£{balance.amount}</p>
         <div className="flex flex-col items-center gap-2">
           <input
             onChange={watchDeposit}

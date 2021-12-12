@@ -124,9 +124,9 @@ class PAIndividualPots(APIView):
 class PASavingsPot(APIView):
 
     # returns all deposits and withdrawals from all a user's pots
-    def get(self, request, user):
+    def get(self, request, pk):
         try:
-            pa = Personal_Assets.objects.filter(user=user)
+            pa = Personal_Assets.objects.filter(user=pk)
         
             serialized_pa = PASerializer(pa, many=True)
         except:
@@ -143,13 +143,42 @@ class PASavingsPot(APIView):
 
     def put(self, request, pk):
         try:
-            pa = Personal_Assets.objects.get(id=pk)
-            updated_pa = PASerializer(pa, data=request.data)
+            pa = Personal_Assets.objects.filter(id=pk).values()
+            previous_balance = pa[0]['amount']
+            new_balance = previous_balance + request.data['amount']
+            pa.update(amount=new_balance)
+
+            # updated_pa = PASerializer(pa, data=request.data)
         except:
             return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-        if updated_pa.is_valid():
-            updated_pa.save()
-            return Response(updated_pa.data, status=status.HTTP_202_ACCEPTED)
-        else: 
-            return Response(updated_pa.errors, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
+
+        return Response(status=status.HTTP_202_ACCEPTED)
+
+class PADeposit(APIView):
+       def put(self, request, pk):
+        try:
+            pa = Personal_Assets.objects.filter(id=pk).values()
+            previous_balance = pa[0]['amount']
+            new_balance = previous_balance + request.data['amount']
+            pa.update(amount=new_balance)
+
+            # updated_pa = PASerializer(pa, data=request.data)
+        except:
+            return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+        return Response(status=status.HTTP_202_ACCEPTED)
+
+class PAWithdraw(APIView):
+       def put(self, request, pk):
+        try:
+            pa = Personal_Assets.objects.filter(id=pk).values()
+            previous_balance = pa[0]['amount']
+            new_balance = previous_balance - request.data['amount']
+            pa.update(amount=new_balance)
+
+            # updated_pa = PASerializer(pa, data=request.data)
+        except:
+            return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+        return Response(status=status.HTTP_202_ACCEPTED)
 
