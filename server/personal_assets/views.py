@@ -85,6 +85,7 @@ class PACreatePot(APIView):
     def post(self, request):
         try:
             pa = PASerializer(data=request.data)
+            print(pa)
         except:
             return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         if pa.is_valid():

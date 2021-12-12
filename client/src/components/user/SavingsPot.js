@@ -8,7 +8,7 @@ const SavingsPot = ({ user, pot, setRender }) => {
   const today = new Date();
   const startDate = `${today.getFullYear()}-${
     today.getMonth() + 1
-  }-${today.getDay()}`;
+  }-${today.getDate()}`;
 
   const { data: balance, isLoading: loadingBalance } = useQuery(
     ['balance', pot],
