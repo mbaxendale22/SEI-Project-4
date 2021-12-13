@@ -7,6 +7,7 @@ __pycache__/
 # project files
 project/settings.py
 settings.py
+project/
 auth_jwt/
 
 # Distribution / packaging
