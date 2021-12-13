@@ -9,9 +9,11 @@ const DashboardData = ({ user }) => {
   );
 
   return (
-    <div className="h-full w-full flex flex-col gap-10 pt-12 items-center">
+    <div className="h-full w-full flex flex-col gap-5 sm:gap-10 pt-12 items-center">
       <div>
-        <p className="text-3xl font-semibold">Welcome back {user?.username}</p>
+        <p className=" text-xl sm:text-3xl font-semibold">
+          Welcome back {user?.username}
+        </p>
       </div>
       <div className="flex flex-col items-center gap-5 w-full sm:w-2/3">
         {houseName ? (
@@ -37,8 +39,10 @@ const DashboardData = ({ user }) => {
       </div>
       <div className=" w-full px-4 sm:w-2/3 sm:px-0 flex flex-col gap-10 transition-opacity">
         <div className="text-center">
-          <h2 className="text-2xl pb-4">How does household work?</h2>
-          <p>
+          <h2 className=" text-xl sm:text-2xl pb-4">
+            How does household work?
+          </h2>
+          <p className="text-sm sm:text-base">
             If you want to use household for your personal finances simply click
             the menu icon to get started. Track your income, expenses and
             savings, and get up-to-date feedback on your spending habits and
@@ -46,16 +50,16 @@ const DashboardData = ({ user }) => {
           </p>
         </div>
         <div className="text-center">
-          <h2 className="text-2xl pb-4">Sharing is caring</h2>
-          <p>
+          <h2 className=" text-xl sm:text-2xl pb-4">Sharing is caring</h2>
+          <p className="text-sm sm:text-base">
             To get the most out of Household, join or create a household. Simply
             mark an expense as shared and let Household take care of the rest.
           </p>
-          <p>
+          <p className="text-sm sm:text-base">
             When you've settled up with your household members, mark the expense
             as resolved to update everyone's personal finances.
           </p>
-          <p>
+          <p className="text-sm sm:text-base">
             Finally, keep track of household expenses in the dedicated household
             dashboard
           </p>
