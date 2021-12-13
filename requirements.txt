@@ -1,5 +1,4 @@
 
-[packages]
 django = "*"
 psycopg2-binary = "*"
 pylint = "*"
@@ -8,8 +7,4 @@ djangorestframework = "*"
 pyjwt = "*"
 django-cors-headers = "*"
 django-on-heroku = "*"
-
-[dev-packages]
-
-[requires]
 python_version = "3.10"
