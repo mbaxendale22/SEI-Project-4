@@ -10,7 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
-import django_on_heroku
+# import django_on_heroku
 import os
 from pathlib import Path
 
@@ -25,7 +25,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-@3932gk3al7g8jcnr$$0h+npeax*jj!-emql1r8i8yl(_d7t+z'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = []
 
@@ -75,8 +75,7 @@ ROOT_URLCONF = 'project.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'client')
-                 ] 
+        'DIRS': [os.path.join(BASE_DIR, '../client')] 
         ,
         'APP_DIRS': True,
         'OPTIONS': {
@@ -152,7 +151,7 @@ AUTH_USER_MODEL = 'auth_jwt.User'
 CORS_ORIGIN_ALLOW_ALL = True
 ROOT_URLCONF = 'project.urls'
 STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, 'client', "build", "static"),
+    os.path.join(BASE_DIR, '../client', "build", "static"),
 )
 
-django_on_heroku.settings(locals())
+# django_on_heroku.settings(locals())
