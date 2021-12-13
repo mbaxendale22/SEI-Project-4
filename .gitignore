@@ -4,12 +4,6 @@ __pycache__/
 *$py.class
 
 
-# project files
-project/settings.py
-settings.py
-project/
-auth_jwt/
-
 # Distribution / packaging
 .Python
 build/
