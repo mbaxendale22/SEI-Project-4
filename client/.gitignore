@@ -8,12 +8,6 @@
 # testing
 /coverage
 
-# production
-/build
-
-#api
-/lib
-
 # misc
 .DS_Store
 .env.local
