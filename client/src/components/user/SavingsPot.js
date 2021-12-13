@@ -19,20 +19,8 @@ const SavingsPot = ({ user, pot, setRender }) => {
     ['balance', pot[1]],
     () => getPot(pot[1])
   );
-  console.log(balance);
-  const balanceClient = useQueryClient(['balance', pot[1]]);
 
-  const { mutate: updateDeposit } = useMutation(makeDeposit, {
-    onMutate: (updatedBalance) => {
-      const { pot } = updatedBalance;
-      console.log(pot);
-      balanceClient.setQueryData(['balance', pot[1]], pot);
-    },
-    onSuccess: () => {
-      balanceClient.invalidateQueries(['balance', pot[1]]);
-    },
-  });
-  const { mutate: updateWithdraw } = useMutation(makeWithdrawl);
+  const balanceClient = useQueryClient(['balance', pot[1]]);
 
   const [deposit, setDeposit] = useState({
     name: pot[0],
@@ -44,6 +32,33 @@ const SavingsPot = ({ user, pot, setRender }) => {
   const [depositButton, setDepositButton] = useState(true);
   const [withdrawButton, setWithdrawButton] = useState(true);
 
+  const { mutate: updateDeposit } = useMutation(makeDeposit, {
+    onMutate: () => {
+      const newPositiveBalance = deposit.amount + balance.amount;
+      const data = {
+        id: pot[1],
+        name: pot[0],
+        amount: newPositiveBalance,
+        date: startDate,
+        user: user.id,
+      };
+      balanceClient.setQueryData(['balance', pot[1]], data);
+    },
+  });
+  const { mutate: updateWithdraw } = useMutation(makeWithdrawl, {
+    onMutate: () => {
+      const newNegativeBalance = balance.amount - deposit.amount;
+      console.log(newNegativeBalance);
+      const data = {
+        id: pot[1],
+        name: pot[0],
+        amount: newNegativeBalance,
+        date: startDate,
+        user: user.id,
+      };
+      balanceClient.setQueryData(['balance', pot[1]], data);
+    },
+  });
   const watchDeposit = (e) => {
     const newDeposit = {
       ...deposit,
@@ -83,13 +98,14 @@ const SavingsPot = ({ user, pot, setRender }) => {
   };
 
   if (loadingBalance) return <p>loading your savings pot...</p>;
+  const newBalance = balanceClient.getQueryData(['balance', pot[1]]);
 
   return (
     <div className="flex flex-col gap-3 items-center">
       <>
         <h2 className="text-lg">{pot[0]}</h2>
         <p>Current Balance:</p>
-        <p>£{balance.amount}</p>
+        <p>{newBalance.amount}</p>
         <div className="flex flex-col items-center gap-2">
           <input
             onChange={watchDeposit}
