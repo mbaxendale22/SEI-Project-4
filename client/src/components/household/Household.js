@@ -1,5 +1,5 @@
 import React from 'react';
-import { QueryClient, useQueryClient } from 'react-query';
+import { useQueryClient } from 'react-query';
 import { doubleChevDown } from '../../assets/doublechev';
 import HouseholdTransactions from './HouseholdTransactions';
 

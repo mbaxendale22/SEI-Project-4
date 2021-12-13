@@ -16,11 +16,10 @@ const PersonalIncomeData = ({ move }) => {
     getIncomeCategories
   );
   const { data: total } = useQuery('total', getTotalIncome);
-  const {
-    data: largest,
-    isLoading: loadingLargest,
-    isError,
-  } = useQuery('largestIncome', getLargestIncome);
+  const { data: largest, isLoading: loadingLargest } = useQuery(
+    'largestIncome',
+    getLargestIncome
+  );
 
   const moveBack = () => {
     window.scroll({

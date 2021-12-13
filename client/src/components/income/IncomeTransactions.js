@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { getIncome } from '../../lib/api/PI.js';
 import { useQuery, useMutation, useQueryClient } from 'react-query';
-import { isResolved, reverseDate } from '../../helpers/rendering';
+import { reverseDate } from '../../helpers/rendering';
 import { deleteIncome } from '../../lib/api/PI';
 import EditIncome from './EditIncome.js';
 

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useMutation, useQuery, useQueryClient } from 'react-query';
+import { useMutation, useQueryClient } from 'react-query';
 import { postIncome } from '../../lib/api/PI.js';
 
 const AddIncome = ({ setShowModal }) => {

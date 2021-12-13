@@ -1,6 +1,4 @@
 import React, { useState } from 'react';
-import { useQuery } from 'react-query';
-import { getCategories } from '../../lib/api/PE.js';
 import IncomeTransactions from './IncomeTransactions';
 import AddIncome from './AddIncome';
 import { doubleChevDown } from '../../assets/doublechev';

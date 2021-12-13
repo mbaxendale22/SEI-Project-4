@@ -2,14 +2,11 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { useQuery } from 'react-query';
 import { getHouseholdInfo } from '../../lib/api/household.js';
-import ExpensesDonut from '../charts/ExpensesDonut';
 
 const DashboardData = ({ user }) => {
-  const {
-    data: houseName,
-    isError,
-    isLoading,
-  } = useQuery('householdInfo', () => getHouseholdInfo(user.household));
+  const { data: houseName } = useQuery('householdInfo', () =>
+    getHouseholdInfo(user.household)
+  );
 
   return (
     <div className="h-full w-full flex flex-col gap-10 pt-12 items-center">
