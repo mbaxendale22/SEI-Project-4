@@ -47,7 +47,7 @@ const Register = () => {
         </div>
         <div className="w-3/4 flex flex-col">
           <label htmlFor="email" className="">
-            Email
+            Email*
           </label>
           <input
             onChange={handleChange}
@@ -93,6 +93,13 @@ const Register = () => {
         <Link to="/login" className="alt-btn">
           Sign In
         </Link>
+      </div>
+      <div className="flex flex-col items-center text-center text-white text-xs mt-4 sm:text-base">
+        <p>
+          *Houshold is a portfolio project. Emails must be unique, however dummy
+          emails are accepted and it is advised that you use one, as well as a
+          password you do not use elsewhere
+        </p>
       </div>
     </div>
   );
