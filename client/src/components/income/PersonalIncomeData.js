@@ -11,15 +11,17 @@ import {
 } from '../../lib/api/PI.js';
 
 const PersonalIncomeData = ({ move }) => {
-  const { data: cat, isLoading } = useQuery(
-    'incomeCategories',
-    getIncomeCategories
-  );
+  const {
+    data: cat,
+    isLoading,
+    isError,
+  } = useQuery('incomeCategories', getIncomeCategories);
   const { data: total } = useQuery('total', getTotalIncome);
-  const { data: largest, isLoading: loadingLargest } = useQuery(
-    'largestIncome',
-    getLargestIncome
-  );
+  const {
+    data: largest,
+    isLoading: loadingLargest,
+    isError: errorLargest,
+  } = useQuery('largestIncome', getLargestIncome);
 
   const moveBack = () => {
     window.scroll({
@@ -30,6 +32,7 @@ const PersonalIncomeData = ({ move }) => {
   };
 
   if (loadingLargest || isLoading) return <p>Loading...</p>;
+  if (errorLargest || isError) return <p>No data to display</p>;
 
   return (
     <>

@@ -32,7 +32,7 @@ const IncomeTransactions = ({ setShowModal }) => {
     <section className="h-full flex flex-col justify-evenly">
       <h2 className="text-center py-3">Recent Income</h2>
       <div className="grid grid-cols-1 gap-1 justify-items-center sm:grid-cols-6 h-48 sm:max-h-64 sm:h-full overflow-x-scroll sm:gap-2 text-center border-2 border-b">
-        {recent?.map((item) => {
+        {recent.map((item) => {
           return (
             <>
               <div key={recent.id}>{reverseDate(item.date)}</div>

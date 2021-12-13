@@ -97,8 +97,8 @@ const Register = () => {
       <div className="flex flex-col items-center text-center text-white text-xs mt-4 sm:text-base">
         <p>
           *Houshold is a portfolio project. Emails must be unique, however dummy
-          emails are accepted and it is advised that you use one, as well as a
-          password you do not use elsewhere
+          emails are accepted and it is advised that you use one. Please us a
+          unique password with at least eight characters.
         </p>
       </div>
     </div>
