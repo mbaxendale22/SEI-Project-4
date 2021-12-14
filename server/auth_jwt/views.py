@@ -24,6 +24,7 @@ class UserIndexView(APIView):
 
     def post(self, request):
         try:
+            print(request.data)
             user = userSerializer(data=request.data)
         except:
             return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
@@ -67,8 +68,8 @@ class UserDetailView(APIView):
 
 class RegisterView(APIView):
     def post(self, request):
+        print(request.data)
         serializer = UserSerializer(data=request.data)
-        print(serializer)
         if serializer.is_valid():
             serializer.save()
             return Response({'message': 'Registration successful'})
