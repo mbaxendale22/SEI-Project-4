@@ -18,7 +18,6 @@ from django.urls import path, include, re_path
 from .views import index
 
 urlpatterns = [
-    re_path(r'^.*$', index),
     path('api/admin/', (admin.site.urls)),
     path('api/users/', include('auth_jwt.urls')),
     path('api/household/', include('household.urls')),
@@ -28,4 +27,5 @@ urlpatterns = [
     path('api/household-expenses/', include('household_expenses.urls')),
     path('api/household-assets/', include('household_assets.urls')),
     path('api/shared-expenses/', include('shared_expenses.urls')),
+    re_path(r'^.*$', index),
 ]
