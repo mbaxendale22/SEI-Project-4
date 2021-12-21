@@ -86,64 +86,79 @@ const EditExpense = ({ setEditing, item }) => {
     expense.share === false ? notShared(expense) : shared(expense);
   };
 
+  console.log(expense.share);
+
   return (
-    <div className="h-full flex flex-col gap-10 items-center">
-      <form onSubmit={handleSubmit} className="flex flex-col gap-7 mt-10 w-2/3">
-        <input
-          onChange={handleChange}
-          type="text"
-          name="name"
-          placeholder={item.name}
-          className="border-primary border-b-2 focus:outline-none"
-        ></input>
-        <select
-          onChange={handleChange}
-          type="text"
-          name="category"
-          placeholder="category"
-          className="border-primary border-b-2 focus:outline-none"
+    <>
+      <div className="h-full flex flex-col gap-10 items-center">
+        <form
+          onSubmit={handleSubmit}
+          className="flex flex-col gap-7 mt-10 w-2/3"
         >
-          <option>{item.category}</option>
-          <option value="bills">Bills</option>
-          <option value="dining">Eating Out</option>
-          <option value="entertainment">Entertainment</option>
-          <option value="general">General</option>
-          <option value="grocery">Grocery</option>
-          <option value="retail">Retail</option>
-          <option value="transport">Transport</option>
-          <option value="travel">Travel & Leisure</option>
-        </select>
-        <input
-          onChange={handleChange}
-          type="text"
-          name="amount"
-          placeholder={item.amount}
-          className="border-primary border-b-2 focus:outline-none"
-        ></input>
-        <input
-          onChange={handleChange}
-          type="date"
-          name="date"
-          value={item.date}
-          className="border-primary border-b-2 focus:outline-none"
-        ></input>
-        <div className="flex items-center justify-around my-4">
-          <button className="transaction-btn w-1/4 text-center">Save</button>
-          <div
-            onClick={() => resolveExpense(resolve)}
-            className="md:border-2 md:border-green-400 text-green-400 px-4 py-2 rounded-md transform hover:-translate-x-1 hover:-translate-y-1 duration-300 ease-in-out"
+          <input
+            onChange={handleChange}
+            type="text"
+            name="name"
+            placeholder={item.name}
+            className="border-primary border-b-2 focus:outline-none"
+          ></input>
+          <select
+            onChange={handleChange}
+            type="text"
+            name="category"
+            placeholder="category"
+            className="border-primary border-b-2 focus:outline-none"
           >
-            Resolve This Expense
+            <option>{item.category}</option>
+            <option value="bills">Bills</option>
+            <option value="dining">Eating Out</option>
+            <option value="entertainment">Entertainment</option>
+            <option value="general">General</option>
+            <option value="grocery">Grocery</option>
+            <option value="retail">Retail</option>
+            <option value="transport">Transport</option>
+            <option value="travel">Travel & Leisure</option>
+          </select>
+          <input
+            onChange={handleChange}
+            type="text"
+            name="amount"
+            placeholder={item.amount}
+            className="border-primary border-b-2 focus:outline-none"
+          ></input>
+          <input
+            onChange={handleChange}
+            type="date"
+            name="date"
+            value={item.date}
+            className="border-primary border-b-2 focus:outline-none"
+          ></input>
+          <div className="flex items-center justify-around my-4">
+            <button className="transaction-btn w-1/4 text-center">Save</button>
+            {expense.share === true && (
+              <div
+                onClick={() => resolveExpense(resolve)}
+                className="md:border-2 md:border-green-400 text-green-400 px-4 py-2 text-center rounded-md transform hover:-translate-x-1 hover:-translate-y-1 duration-300 ease-in-out"
+              >
+                Resolve This Expense
+              </div>
+            )}
+            <div
+              className="transaction-btn w-1/4 text-center"
+              onClick={() => setEditing(false)}
+            >
+              Go Back
+            </div>
           </div>
-          <div
-            className="transaction-btn w-1/4 text-center"
-            onClick={() => setEditing(false)}
-          >
-            Go Back
-          </div>
-        </div>
-      </form>
-    </div>
+        </form>
+      </div>
+      {expense.share === true && (
+        <p className="text-xs sm:text-sm p-2 text-center">
+          {' '}
+          shared expenses cannot be edited, only be resolved or deleted
+        </p>
+      )}
+    </>
   );
 };
 

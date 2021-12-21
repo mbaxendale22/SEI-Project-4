@@ -15,6 +15,7 @@ const Manage = () => {
   const [createToggle, setCreateToggle] = useState(false);
   const [successToggle, setSuccessToggle] = useState(false);
   const [joinToggle, setJoinToggle] = useState(false);
+  const [leaveToggle, setLeaveToggle] = useState(false);
   const [houseName, setHouseName] = useState({
     name: '',
   });
@@ -22,7 +23,9 @@ const Manage = () => {
   const [id, setId] = useState(null);
 
   //removing a user from a household
-  const { mutate: removeHousehold } = useMutation(removeUserHousehold);
+  const { mutate: removeHousehold } = useMutation(removeUserHousehold, {
+    onSuccess: () => setLeaveToggle(true),
+  });
 
   //************ Functions for handling the create new household form *************//
 
@@ -101,12 +104,19 @@ const Manage = () => {
       <div onClick={() => history.push('/dashboard')} className="alt-btn">
         Back to Dashboard
       </div>
-      <div
-        className="text-xs sm:text-base alt-btn"
-        onClick={() => removeHousehold()}
-      >
-        Leave Current Household
-      </div>
+      {leaveToggle ? (
+        <div className="text-xs sm:text-base px-4 bg-green-500 bg-opacity-90 alt-btn">
+          {' '}
+          Success!
+        </div>
+      ) : (
+        <div
+          className="text-xs sm:text-base alt-btn"
+          onClick={() => removeHousehold()}
+        >
+          Leave Current Household
+        </div>
+      )}
       <div className="flex gap-4 sm:gap-32 justify-center w-full sm:w-3/4 h-1/2 text-xs sm:text-base">
         {!successToggle ? (
           <div className="flex flex-col gap-10 w-2/5 sm:w-1/3">

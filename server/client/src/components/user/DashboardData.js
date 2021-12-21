@@ -25,7 +25,7 @@ const DashboardData = ({ user }) => {
         </p>
       </div>
       <div className="flex flex-col items-center gap-5 w-full sm:w-2/3">
-        {houseName ? (
+        {typeof user.household === 'number' ? (
           <>
             <div>Your a member of {newHouseName?.name}</div>
             <div>Your unique household ID is {user?.household}</div>
