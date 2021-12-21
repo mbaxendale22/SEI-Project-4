@@ -17,6 +17,9 @@ const AddIncome = ({ setShowModal }) => {
 
   const { mutate } = useMutation(postIncome, {
     onSuccess: () => {
+      queryClient.invalidateQueries('total');
+      queryClient.invalidateQueries('incomeCategories');
+      queryClient.invalidateQueries('largestIncome');
       setShowModal(false);
     },
   });

@@ -47,7 +47,7 @@ const Register = () => {
         </div>
         <div className="w-3/4 flex flex-col">
           <label htmlFor="email" className="">
-            Email*
+            Email<span className="text-white">*</span>
           </label>
           <input
             onChange={handleChange}
@@ -89,16 +89,16 @@ const Register = () => {
         )}
       </form>
       <div className="mt-8 w-full flex flex-col gap-3 items-center">
-        <p className="text-black">Already signed up?</p>
+        <p className="text-black text-xs sm:text-base">Already signed up?</p>
         <Link to="/login" className="alt-btn">
           Sign In
         </Link>
       </div>
       <div className="flex flex-col items-center text-center text-white text-xs mt-4 sm:text-base">
         <p>
-          *Houshold is a portfolio project. Emails must be unique, however dummy
-          emails are accepted and it is advised that you use one. Please us a
-          unique password with at least eight characters.
+          *No spaces in username, emails must be unique, however dummy emails
+          are accepted. Please us a unique password with at least eight
+          characters.
         </p>
       </div>
     </div>

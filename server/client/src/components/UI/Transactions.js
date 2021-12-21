@@ -20,7 +20,12 @@ const Transactions = ({ setShowModal, user }) => {
       return deleteExpense(id);
     },
     {
-      onSuccess: () => queryClient.invalidateQueries('recent'),
+      onSuccess: () => {
+        queryClient.invalidateQueries('recent');
+        queryClient.invalidateQueries('largest');
+        queryClient.invalidateQueries('categories');
+        queryClient.invalidateQueries('total');
+      },
     }
   );
   const { mutate: shared } = useMutation(
@@ -30,6 +35,9 @@ const Transactions = ({ setShowModal, user }) => {
     {
       onSuccess: () => {
         queryClient.invalidateQueries('recent');
+        queryClient.invalidateQueries('largest');
+        queryClient.invalidateQueries('categories');
+        queryClient.invalidateQueries('total');
       },
     }
   );

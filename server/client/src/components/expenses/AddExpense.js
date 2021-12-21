@@ -22,6 +22,9 @@ const AddExpense = ({ setShowModal }) => {
   const { mutate: notShared } = useMutation(postExpenses, {
     onSuccess: () => {
       queryClient.invalidateQueries('recent');
+      queryClient.invalidateQueries('largest');
+      queryClient.invalidateQueries('categories');
+      queryClient.invalidateQueries('total');
       setShowModal(false);
     },
   });
@@ -29,6 +32,9 @@ const AddExpense = ({ setShowModal }) => {
   const { mutate: shared } = useMutation(postSharedExpenses, {
     onSuccess: () => {
       queryClient.invalidateQueries('recent');
+      queryClient.invalidateQueries('largest');
+      queryClient.invalidateQueries('categories');
+      queryClient.invalidateQueries('total');
       setShowModal(false);
     },
   });

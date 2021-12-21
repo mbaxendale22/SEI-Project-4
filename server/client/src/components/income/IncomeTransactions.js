@@ -18,7 +18,12 @@ const IncomeTransactions = ({ setShowModal }) => {
       return deleteIncome(id);
     },
     {
-      onSuccess: () => queryClient.invalidateQueries('income'),
+      onSuccess: () => {
+        queryClient.invalidateQueries('income');
+        queryClient.invalidateQueries('incomeCategories');
+        queryClient.invalidateQueries('largestIncome');
+        queryClient.invalidateQueries('total');
+      },
     }
   );
 

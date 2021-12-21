@@ -17,8 +17,10 @@ const EditIncome = ({ setEditing, item }) => {
 
   const { mutate } = useMutation(() => updateIncome(item.id, income), {
     onSuccess: () => {
-      queryClient.invalidateQueries('recent');
-      queryClient.invalidateQueries('largest');
+      queryClient.invalidateQueries('income');
+      queryClient.invalidateQueries('incomeCategories');
+      queryClient.invalidateQueries('largestIncome');
+      queryClient.invalidateQueries('total');
       setEditing(false);
     },
   });

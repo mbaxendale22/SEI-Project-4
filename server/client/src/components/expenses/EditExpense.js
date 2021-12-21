@@ -37,6 +37,8 @@ const EditExpense = ({ setEditing, item }) => {
       onSuccess: () => {
         queryClient.invalidateQueries('recent');
         queryClient.invalidateQueries('largest');
+        queryClient.invalidateQueries('categories');
+        queryClient.invalidateQueries('total');
         setEditing(false);
       },
     }
@@ -47,6 +49,8 @@ const EditExpense = ({ setEditing, item }) => {
       onSuccess: () => {
         queryClient.invalidateQueries('recent');
         queryClient.invalidateQueries('largest');
+        queryClient.invalidateQueries('categories');
+        queryClient.invalidateQueries('total');
         setEditing(false);
       },
     }

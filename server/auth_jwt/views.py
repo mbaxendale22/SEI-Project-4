@@ -24,7 +24,6 @@ class UserIndexView(APIView):
 
     def post(self, request):
         try:
-            print(request.data)
             user = userSerializer(data=request.data)
         except:
             return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
@@ -97,8 +96,17 @@ class LoginView(APIView):
 
 class updateHousehold(APIView):
     def put(self, request, pk):
+        print(request.data)
         try:
             house = User.objects.filter(id=pk).update(household=request.data['household'])
+        except:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        return Response (status=status.HTTP_204_NO_CONTENT)
+
+class removeHousehold(APIView):
+    def put(self, request, pk):
+        try:
+            user = User.objects.filter(id=pk).update(household_id='')
         except:
             return Response(status=status.HTTP_404_NOT_FOUND)
         return Response (status=status.HTTP_204_NO_CONTENT)

@@ -46,7 +46,7 @@ const Dashboard = () => {
         >
           {menuIcon}
         </div>
-        <div className=" sidebar z-10 absolute h-screen rounded-sm bg-primary bg-opacity-85 w-1/3 flex flex-col justify-around transform -translate-x-full transition duration-300 ease-in-out">
+        <div className=" sidebar z-10 absolute h-screen rounded-sm bg-primary bg-opacity-85 w-2/5 sm:w-1/3 flex flex-col justify-around transform -translate-x-full transition duration-300 ease-in-out">
           <Sidebar setNavigate={setNavigate} showSideBar={showSideBar} />
         </div>
 

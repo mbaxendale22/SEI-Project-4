@@ -17,8 +17,8 @@ const CreatePot = ({ startDate, user }) => {
 
   const { mutate } = useMutation(createSavingsPot, {
     onSuccess: () => {
-      queryClient.invalidateQueries('savings');
       setToggle(false);
+      queryClient.invalidateQueries('savings');
     },
   });
 
