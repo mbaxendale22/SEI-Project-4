@@ -4,7 +4,7 @@
 
 
 ## Overview
-Household was developed in fulfillment of General Assembly's SEI Bootcamp. The brief was to create a full stack web application using an SQL database, Django backend, and React frontend, with a time-frame of nine days. Household is a financial management app in which a user can track their income, expenses, and savings. The user is also able to create a household with other users. Once created, the app will handle the distribution of household expenses among members proportionately, all the user has to do is mark the expense as 'shared' and the app will take care of the rest. Both individual user and household data are represented with charts and key insight are available on demand such as largest monthly expense and total monthly income. The app is fully mobile responsive.      
+Household was developed in fulfillment of General Assembly's Software Engineering Immersive Bootcamp. The brief was to create a full stack web application using an SQL database, Django backend, and React frontend, with a time-frame of nine days. Household is a financial management app in which a user can track their income, expenses, and savings. The user is also able to create a household with other users. Once created, the app will handle the distribution of household expenses among members proportionately, all the user has to do is mark the expense as 'shared' and the app will take care of the rest. Both individual user and household data are represented with charts and key insight are available on demand such as largest monthly expense and total monthly income. The app is fully mobile responsive.      
 
 ## Tech Stack 
 
@@ -16,6 +16,7 @@ Household was developed in fulfillment of General Assembly's SEI Bootcamp. The b
 * React Query
 * Tailwind CSS 
 * Chart.js
+* Figma
 
 
 ## App Snapshot 
@@ -35,7 +36,7 @@ Clicking the downward arrow scrolls the page down to reveal data visualization a
 
 ![data](./readme_assets/data.png)
 
-The household expenses page keeps track of shared expenses. 
+The household expenses page keeps track of shared expenses
 
 ![household](./readme_assets/household.png)
 
@@ -44,6 +45,20 @@ Users can create up to 3 savings pots, adding or withdrawing as required
 ![savings](./readme_assets/savings.png)
 
 ## Planning
+To help build the database I used an entity relationship diagram:
+
+![ERD](./readme_assets/ERD.png)
+
+I built basic wireframes for key pages using Figma, some examples include:
+
+Landing Page 
+![Landing Page Wire Frame]('./readme_assets/WF_landing.png)
+
+Dashboard
+![Dashboard Wire Frame]('./readme_assets/WF_dashboard.png)
+
+Personal Expenses
+![Expenses Wire Frame]('./readme_assets/WF_expenses.png)
 
 
 ## Featured Code Snippet
@@ -127,14 +142,14 @@ class SEIndexView(APIView):
 
 ## Development Challenges & Wins
 
-For my final project on General Assembly's SEI bootcamp I wanted to move away from building apps primarily focused on serving data to the user and towards something oriented around providing a service with a core functionality; something I would be keen to use myself; I landed on a personal finance app. Attempting to build the app in a new programming language (python) with a new framework (Django) a new style of database (SQL) was extremely challenging. I had worked with these technologies for no more than a few days at the outset of the project. Of all three, working with SQL was the most challenging conceptually, having only used MongoDB previously. I am sure that the relationships between tables could be streamlined and, in turn, the views that handle the HTTP requests from the front end similarly simplified. I attempted to embrace the 'single page app' aspect of React as much as possible, cutting down on routing and employing conditionally rendered UI components wherever possible. This lead to both UI (particularly with absolutely positioned elements) and data fetching challenges. On that note, I opted to use React Query to handle the cached data in the app. This again was definitely a challenge, whilst I still have more requests firing than I would like, I really enjoyed using React Query as a way to learn more about global state management, app structure, and data caching. 
+For my final project on General Assembly's Software Engineering Immersive Bootcamp I wanted to move away from building apps primarily focused on serving data to the user and towards something oriented around providing a service with a core functionality, something I would be keen to use myself; I landed on a personal finance app. Several of the main technologies used in this project (Django, Python, SQL) were new to me at the outset. Of the three, working with SQL was the most challenging conceptually, having only used MongoDB previously. I am sure that the relationships between tables could be streamlined and, in turn, the views that handle the HTTP requests from the front end similarly simplified. I attempted to embrace the 'single page app' aspect of React as much as possible, cutting down on routing and employing conditionally rendered UI components wherever possible. This lead to both UI (particularly with absolutely positioned elements) and data fetching challenges. On that note, I opted to use React Query to handle the cached data in the app. This again was definitely a challenge, whilst I still have more requests firing than I would like, I really enjoyed using React Query as a way to learn more about global state management, app structure, and data caching. 
 
 Overall, I thoroughly enjoyed building the app. It was definitely a sprint to complete within the time-frame, but I enjoy this immersive style of working. The project gave me a much clearer understanding of the tradeoffs between database types; as well as between a 'batteries included' framework like Django and a lighter server-side framework such as Express. Getting the main 'shared expenses' functionality working correctly was extremely satisfying. I also designed the app 'mobile first', which was a great learning experience and an approach I will use more frequently in the future. I was able to dive deeper into Tailwind CSS and was much happier with the styling and responsiveness of this app in comparison to others I had built on the course.  
 
 
 ## Future Development
 
-My aim for future development is to development Household into a more rounded household planning solution by adding features such as: 
+New features for the app are Household into a more rounded household planning solution by adding features such as: 
 
 * Shared household savings pots 
 * Household chores - customizable household chores that are distributed evenly among household members
