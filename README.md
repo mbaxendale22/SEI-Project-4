@@ -45,11 +45,11 @@ Users can create up to 3 savings pots, adding or withdrawing as required
 ![savings](./readme_assets/savings.png)
 
 ## Planning
-To help build the database I used an entity relationship diagram:
+An entity relationship diagram was constructed to represent the structure of the database:
 
 ![ERD](./readme_assets/ERD.png)
 
-I built basic wireframes for key pages using Figma, some examples include:
+Basic wireframes were built for key pages using Figma, some examples include:
 
 Landing Page 
 
@@ -66,7 +66,7 @@ Personal Expenses
 
 ## Featured Code Snippet
 The ability to mark an expense as 'shared' and have that expense split evenly amongst members of the household and included 
-in a separate household table was my main MVP goal for the project. The following code snippet is the view that handles this 
+in a separate household table was the main MVP goal for the project. The following code snippet is the view that handles this 
 functionality:  
 
 ```python 
