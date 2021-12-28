@@ -52,13 +52,13 @@ To help build the database I used an entity relationship diagram:
 I built basic wireframes for key pages using Figma, some examples include:
 
 Landing Page 
-![Landing Page Wire Frame]('./readme_assets/WF_landing.png)
+![Landing Page Wire Frame](./readme_assets/WF_landing.png)
 
 Dashboard
-![Dashboard Wire Frame]('./readme_assets/WF_dashboard.png)
+![Dashboard Wire Frame](./readme_assets/WF_dashboard.png)
 
 Personal Expenses
-![Expenses Wire Frame]('./readme_assets/WF_expenses.png)
+![Expenses Wire Frame](./readme_assets/WF_expenses.png)
 
 
 ## Featured Code Snippet
