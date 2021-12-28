@@ -4,7 +4,7 @@
 
 
 ## Overview
-Household was developed in fulfillment of General Assembly's Software Engineering Immersive Bootcamp. The brief was to create a full stack web application using an SQL database, Django backend, and React frontend, with a time-frame of nine days. Household is a financial management app in which a user can track their income, expenses, and savings. The user is also able to create a household with other users. Once created, the app will handle the distribution of household expenses among members proportionately, all the user has to do is mark the expense as 'shared' and the app will take care of the rest. Both individual user and household data are represented with charts and key insight are available on demand such as largest monthly expense and total monthly income. The app is fully mobile responsive.      
+Household was developed in fulfilment of General Assembly's Software Engineering Immersive Bootcamp. The brief was to create a full stack web application using an SQL database, Django backend, and React frontend, with a time-frame of nine days. Household is a financial management app in which a user can track their income, expenses, and savings. The user is also able to create a household with other users. Once created, the app will handle the distribution of household expenses among members proportionately, all the user has to do is mark the expense as 'shared' and the app will take care of the rest. Both individual user and household data are represented with charts and key insights are available on demand such as largest monthly expense and total monthly income. The app is fully mobile responsive.      
 
 ## Tech Stack 
 
@@ -52,12 +52,15 @@ To help build the database I used an entity relationship diagram:
 I built basic wireframes for key pages using Figma, some examples include:
 
 Landing Page 
+
 ![Landing Page Wire Frame](./readme_assets/WF_landing.png)
 
 Dashboard
+
 ![Dashboard Wire Frame](./readme_assets/WF_dashboard.png)
 
 Personal Expenses
+
 ![Expenses Wire Frame](./readme_assets/WF_expenses.png)
 
 
