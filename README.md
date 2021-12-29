@@ -4,7 +4,7 @@
 
 
 ## Overview
-Household was developed in fulfilment of General Assembly's Software Engineering Immersive Bootcamp. The brief was to create a full stack web application using an SQL database, Django backend, and React frontend, with a time-frame of nine days. Household is a financial management app in which a user can track their income, expenses, and savings. The user is also able to create a household with other users. Once created, the app will handle the distribution of household expenses among members proportionately, all the user has to do is mark the expense as 'shared' and the app will take care of the rest. Both individual user and household data are represented with charts and key insights are available on demand such as largest monthly expense and total monthly income. The app is fully mobile responsive.      
+Household was developed in fulfilment of General Assembly's Software Engineering Immersive Bootcamp. The brief was to create a full stack web application using an SQL database, Django backend, and React frontend, within a time-frame of nine days. Household is a financial management app in which a user can track their income, expenses, and savings. The user is also able to create a household with other users. Once created, the app will handle the distribution of household expenses among members proportionately, all the user has to do is mark the expense as 'shared' and the app will take care of the rest. Both individual user and household data are represented with charts and key insights are available on demand such as largest monthly expense and total monthly income. The app is fully mobile responsive.      
 
 ## Tech Stack 
 
