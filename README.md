@@ -8,6 +8,8 @@ Household was developed in fulfilment of General Assembly's Software Engineering
 
 ## Tech Stack 
 
+* Python
+* Javascript 
 * Django 
 * Django REST Framework
 * PostgreSQL
