@@ -96,9 +96,8 @@ const Register = () => {
       </div>
       <div className="flex flex-col items-center text-center text-white text-xs mt-4 sm:text-base">
         <p>
-          *No spaces in username, emails must be unique, however dummy emails
-          are accepted. Please us a unique password with at least eight
-          characters.
+          *No spaces in username, dummy emails are accepted. Please use a unique
+          password with at least eight characters.
         </p>
       </div>
     </div>
