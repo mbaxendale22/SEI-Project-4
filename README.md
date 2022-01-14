@@ -6,6 +6,31 @@
 ## Overview
 Household was developed in fulfilment of General Assembly's Software Engineering Immersive Bootcamp. The brief was to create a full stack web application using an SQL database, Django backend, and React frontend, within a time-frame of nine days. Household is a financial management app in which a user can track their income, expenses, and savings. The user is also able to create a household with other users. Once created, the app will handle the distribution of household expenses among members proportionately, all the user has to do is mark the expense as 'shared' and the app will take care of the rest. Both individual user and household data are represented with charts and key insights are available on demand such as largest monthly expense and total monthly income. The app is fully mobile responsive.      
 
+## Guest Login
+In order to use household you must create an account, if you just want to look around without signing up,
+feel free to use these credentials: 
+
+email: guest1@email.com
+password: welcome1*3
+
+## Technical Brief
+
+
+## User Stories
+
+The user stories around which they project was planned and built are as follows: 
+
+* Users can add expenses, edit the details of those expenses, and delete expenses
+* Users can add a savings pot, add and withdraw from the pot, and delete the pot
+* Users can receive key stats about their spending in the form of data visualisation
+* Users can create, or join, households with other users
+* Users have access to a household dashboard which tracks expenses and displays key stats about the household's expenses  
+* Users can create 'shared expenses'
+* Shared expenses will be divided amongst household members equally, added to each users' personal expenses, and the household expenses dashboard without user input being required
+* User's can 'resolved' a shared expense, meaning the bill has been settled among household members. 
+
+
+
 ## Tech Stack 
 
 * Python
@@ -67,9 +92,37 @@ Personal Expenses
 
 
 ## Featured Code Snippet
-The ability to mark an expense as 'shared' and have that expense split evenly amongst members of the household and included 
-in a separate household table was the main MVP goal for the project. The following code snippet is the view that handles this 
-functionality:  
+The biggest development challenge for this project centered around the following user story: 
+
+* Shared expenses will be divided amongst household members equally, added to each users' personal expenses, and the household expenses dashboard without user input being required 
+
+My main MVP for the app was a platform that allowed a user to manage household, shared expenses with no additional work than simply managing their own personal expenses. In this featured code snippet I'll walk through the key stages of acheiving that MVP.
+
+The first step (from the front end perspective) was to create seperate API calls, hitting seperate API endpoints, that were triggered depending on whether the user had marked the expense as 'shared'. Here's the shared expense function: 
+
+```python
+export const postSharedExpenses = async (x) => {
+  const { data } = await axios.post('/api/shared-expenses/', x, {
+    headers: {
+      common,
+    },
+  });
+  return data;
+};
+```
+
+On the back end, a view handles the incoming request. This view has to do several things: 
+
+1. Just like a non-shared expenses, a new row has to be added to the personal expenses table, however, the AMOUNT must be divided by the number of people in the household, 
+i.e., if a bill is £100, and the household has four members, then an expense for only £25 should be added for each member of the household
+2. The household expenses table needs to be updated with the original amount of the expense 
+
+
+In the first part of the view, the database is queried to find the other members of the household (the other users who also have the same household ID as a foreign key)
+The returned query was then put into a list for two reasons: 
+
+1. To get the length of the list and thereby know how many people are splitting the bill. 
+2. To loop through later in the view so that the expense can be added to each household member's personal expenses regardless of how many there are. 
 
 ```python 
 
@@ -84,6 +137,22 @@ class SEIndexView(APIView):
         # return the query as a list, will use for looping through later 
         shared_amount = (request.data['amount'] / (len(h_list) + 1)) 
         #calc the correct splitting of the expense including the user who shared it
+
+
+  ```
+
+  The next step was to build seperate dictionaries of data to send to the database as follows: 
+
+  1. one for the user who created the expenses (`pe`)
+  2. one for the other members of the household (`pse`)
+  3. one for the household 
+  
+Why did they have to be seperated? Mainly because the `owner` and `creator` of the expense are going to be different. These properties were created so that users can keep track of who created the expense. This is also why the user needs to be excluded from the query results stored in `house_members`.
+
+ My intial plan was to give extra permissions to the creator of the expense (for example, only the creator can mark the expense as resolved), unfortunately I ran out of time to implement this. However it is still useful for household members to know who created the expense. The household expenses dictionary contains different data and so has to be seperated. 
+
+
+```python
 
 #build out the correct structure for each post request 
 # (1) the user's personal expenses, (2) the other members of the household's personal expenses, (3) the household expenses table 
@@ -136,7 +205,76 @@ class SEIndexView(APIView):
                 return Response(status=status.HTTP_422_UNPROCESSABLE_ENTITY)
 
         return Response(status=status.HTTP_201_CREATED)
+      
+```
 
+
+This pattern is then repeatable for other aspects of shared expenses. For example, when a user confirms that an expense has been resolved, this is updated on the household dashboard as well as for each member of the household. The view that handles this follows a very similar pattern but is able to make use of the `.update()` method to straightforwardly resolve the `resolved` property.  
+
+```python
+class SEResolveView(APIView):
+     def put(self, request, pk):
+        house_members = User.objects.filter(household=request.data['household']).exclude(id=request.data['creator']) # grab the other members of the household from the User model, exlude the current user from the list
+        serialized_house_members = UserSerializer(house_members, many=True)
+        h_list = list(serialized_house_members.data) #return the query as a list, will use for looping through later 
+
+        owners_personal_expense = Personal_Expenses.objects.get(id=pk)
+        owners_personal_expense_to_update = Personal_Expenses.objects.filter(id=pk).update(resolved=True)
+
+        household_expense = Household_Expenses.objects.filter(
+            creator=owners_personal_expense.creator,
+            name=owners_personal_expense.name,
+            category=owners_personal_expense.category, 
+            date=owners_personal_expense.date,
+            ).update(resolved=True)
+#use the query list to send a post request to the personal_expenses table for each user in it 
+        for index, person in enumerate(h_list):
+            
+            shared_personal_expense = Personal_Expenses.objects.filter(
+            creator=owners_personal_expense.creator,
+            owner=h_list[index]['id'],
+            name=owners_personal_expense.name,
+            category=owners_personal_expense.category, 
+            date=owners_personal_expense.date
+            ).update(resolved=True)
+
+        return Response(status=status.HTTP_201_CREATED)
+
+  ```
+
+
+There are a few actions for which I elected not to implement the same pattern for shared expenses: editing and deleting shared expenses. Once an expense lands in a user's table, I felt they should have control over it - so it could not be simply deleted by other household members or the numbers changed. With more development I think implementing the 'creator' permissions I mentioned above would probably be a good balance: if the user has creeated the expense, then they can edit or delete it both for themselves and for the other members of the household. For now I simply disabled that option with a conditional render. 
+
+If the expense is shared then the option to resolve it is shown, along with an explanation that it cannot be edited otherwise a save button is displayed to the user:
+
+```javascript
+
+{expense.share === true ?
+              <div
+                onClick={() => resolveExpense(resolve)}
+                className="md:border-2 md:border-green-400 text-green-400 px-4 py-2 text-center rounded-md transform hover:-translate-x-1 hover:-translate-y-1 duration-300 ease-in-out"
+              >
+                Resolve This Expense
+              </div>
+           :  
+            <button className="transaction-btn w-1/4 text-center">Save</button>
+                      
+            }
+            <div
+              className="transaction-btn w-1/4 text-center"
+              onClick={() => setEditing(false)}
+            >
+              Go Back
+            </div>
+          </div>
+        </form>
+      </div>
+      {expense.share === true && (
+        <p className="text-xs sm:text-sm p-2 text-center">
+          {' '}
+          shared expenses cannot be edited, only be resolved or deleted
+        </p>
+      )}
 
 ```
 
@@ -144,6 +282,7 @@ class SEIndexView(APIView):
 ## Known Bugs
 
 * On creating a new household, the user will be shown an updated household ID immediately, however the name of the new household will only show after the user has navigated away from the homepage and back again. This issue was fixed elsewhere by using React Query to optimistically update the UI, but has not yet been successfully implemented on this one particular update.
+* Usernames cannot have spaces.
 
 ## Development Challenges & Wins
 
