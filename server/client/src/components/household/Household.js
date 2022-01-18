@@ -8,7 +8,6 @@ const Household = ({ user, move }) => {
   const queryClient = useQueryClient();
   const householdInfo = queryClient.getQueryData(['householdInfo', user.id]);
 
-  console.log(user);
   return (
     <>
       {user.household !== null ? (

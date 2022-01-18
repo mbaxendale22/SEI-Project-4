@@ -36,6 +36,16 @@ export const isHouseholdResolved = (item) => {
   }
 };
 
+
+export const checkOwner = (item, id) => {
+  if (item.creator === id) {
+    return <div className="text-green-400" >created</div>
+  } else {
+    return <div className="text-primary">not created</div>
+  }
+
+} 
+
 //convert the date from format stored on the database to day-month-year
 export const reverseDate = (date) => {
   const dateArray = date.split('-');
