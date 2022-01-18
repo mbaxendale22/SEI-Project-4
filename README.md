@@ -70,9 +70,13 @@ Clicking the downward arrow scrolls the page down to reveal data visualization a
 
 ![data](./readme_assets/data.png)
 
-The household expenses page keeps track of shared expenses
+The household expenses page keeps track of shared expenses. 
 
 ![household](./readme_assets/household.png)
+
+Users can toggle viewing only unresolved expenses, see what they current owe in total to other household members, and see what they're owed by other household members
+
+![household toggles](./readme_assets/household-toggles.png)
 
 Users can create up to 3 savings pots, adding or withdrawing as required
 
