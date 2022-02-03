@@ -86,8 +86,6 @@ const EditExpense = ({ setEditing, item }) => {
     expense.share === false ? notShared(expense) : shared(expense);
   };
 
-  console.log(expense.share);
-
   return (
     <>
       <div className="h-full flex flex-col gap-10 items-center">

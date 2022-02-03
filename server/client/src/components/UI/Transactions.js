@@ -57,7 +57,6 @@ const Transactions = ({ setShowModal, user }) => {
   const [currentItem, setCurrentItem] = useState({});
 
   if (loading) return <p>loading...</p>;
-  if (errors) return <p>Something has gone wrong please try again later</p>;
   if (editing)
     return <EditExpense setEditing={setEditing} item={currentItem} />;
   return (

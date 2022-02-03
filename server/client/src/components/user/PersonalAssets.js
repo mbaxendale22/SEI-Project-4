@@ -16,7 +16,6 @@ const PersonalAssets = ({ user }) => {
   const pots = new Set(names);
   const [pots1, pots2, pots3] = pots;
 
-  console.log(pots1);
 
   return (
     <div className="h-screen w-full flex flex-col gap-20 items-center justify-center">

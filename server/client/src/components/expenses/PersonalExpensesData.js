@@ -13,7 +13,7 @@ import {
 const PersonalExpensesData = ({ move }) => {
   const { data: cat, isLoading } = useQuery('categories', getCategories);
   const { data: total } = useQuery('total', getTotalExpenses);
-  const { data: largest, isLoading: stillLoading } = useQuery(
+  const { data: largest, isLoading: stillLoading, isError: largestError } = useQuery(
     'largest',
     getLargestExpense
   );
@@ -27,6 +27,7 @@ const PersonalExpensesData = ({ move }) => {
   };
 
   if (stillLoading) return <p>Loading...</p>;
+  if(largestError) return <p>No data available for this month, add an expense to get started</p>
 
   return (
     <>

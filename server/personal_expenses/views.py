@@ -76,10 +76,12 @@ class PERecentView(APIView):
 class PELastMonth(APIView):
     def get(self, request):
         try:
+            print('htting corrent endpoint')
             start = request.GET.get('start')
             end = request.GET.get('end')
             owner = request.GET.get('owner')
             pe = Personal_Expenses.objects.filter(owner=owner).filter(date__gte=str(start), date__lte=str(end)).order_by('-date')
+            print(pe)
             serialized_pe = PESerializer(pe, many=True)
         except:
             return Response(status=status.HTTP_404_NOT_FOUND)

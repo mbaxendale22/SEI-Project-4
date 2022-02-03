@@ -48,7 +48,6 @@ const SavingsPot = ({ user, pot, setRender }) => {
   const { mutate: updateWithdraw } = useMutation(makeWithdrawl, {
     onMutate: () => {
       const newNegativeBalance = balance.amount - deposit.amount;
-      console.log(newNegativeBalance);
       const data = {
         id: pot[1],
         name: pot[0],

@@ -16,7 +16,7 @@ const HouseholdExpensesData = ({ move }) => {
     getHouseCategories
   );
   const { data: total } = useQuery('totalHousehold', getHouseTotalExpenses);
-  const { data: largest, isLoading: stillLoading } = useQuery(
+  const { data: largest, isLoading: stillLoading, isError: largestError } = useQuery(
     'largestHoushold',
     getHouseLargestExpense
   );
@@ -30,6 +30,9 @@ const HouseholdExpensesData = ({ move }) => {
   };
 
   if (stillLoading) return <p>Loading...</p>;
+  if (largestError) return <p>No data available for this month yet</p>
+  
+  
 
   return (
     <>
