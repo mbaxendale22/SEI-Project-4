@@ -1,37 +1,44 @@
-import React from 'react';
-import { useQuery } from 'react-query';
-import { Doughnut } from 'react-chartjs-2';
-import ExpensesDonut from '../charts/ExpensesDonut';
-import { reverseDate } from '../../helpers/rendering';
-import { doubleChevUp } from '../../assets/doublechev';
+import React from 'react'
+import { useQuery } from 'react-query'
+import { Doughnut } from 'react-chartjs-2'
+import ExpensesDonut from '../charts/ExpensesDonut'
+import { reverseDate } from '../../helpers/rendering'
+import { doubleChevUp } from '../../assets/doublechev'
 import {
   getTotalExpenses,
   getLargestExpense,
   getCategories,
-} from '../../lib/api/PE.js';
+} from '../../lib/api/PE.js'
 
 const PersonalExpensesData = ({ move }) => {
-  const { data: cat, isLoading } = useQuery('categories', getCategories);
-  const { data: total } = useQuery('total', getTotalExpenses);
-  const { data: largest, isLoading: stillLoading, isError: largestError } = useQuery(
-    'largest',
-    getLargestExpense
-  );
+  const { data: cat, isLoading } = useQuery('categories', getCategories)
+  const { data: total } = useQuery('total', getTotalExpenses)
+  const {
+    data: largest,
+    isLoading: stillLoading,
+    isError: largestError,
+  } = useQuery('largest', getLargestExpense)
 
   const moveBack = () => {
     window.scroll({
       top: 0,
       left: 0,
       behavior: 'smooth',
-    });
-  };
+    })
+  }
 
-  if (stillLoading) return <p>Loading...</p>;
-  if(largestError) return <p>No data available for this month, add an expense to get started</p>
+  if (stillLoading) return <p>Loading...</p>
+  if (largestError)
+    return (
+      <p>No data available for this month, add an expense to get started</p>
+    )
 
   return (
     <>
-      <span onClick={moveBack} className=" mt-10 transform hover:scale-150">
+      <span
+        onClick={moveBack}
+        className=" mt-10 transform hover:scale-150 cursor-pointer"
+      >
         {doubleChevUp}
       </span>
       <div>
@@ -78,7 +85,7 @@ const PersonalExpensesData = ({ move }) => {
         )}
       </div>
     </>
-  );
-};
+  )
+}
 
-export default PersonalExpensesData;
+export default PersonalExpensesData

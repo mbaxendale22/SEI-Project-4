@@ -1,42 +1,44 @@
-import React from 'react';
-import { useQuery } from 'react-query';
-import { Doughnut } from 'react-chartjs-2';
-import ExpensesDonut from '../charts/ExpensesDonut';
-import { reverseDate } from '../../helpers/rendering';
-import { doubleChevUp } from '../../assets/doublechev';
+import React from 'react'
+import { useQuery } from 'react-query'
+import { Doughnut } from 'react-chartjs-2'
+import ExpensesDonut from '../charts/ExpensesDonut'
+import { reverseDate } from '../../helpers/rendering'
+import { doubleChevUp } from '../../assets/doublechev'
 import {
   getHouseTotalExpenses,
   getHouseLargestExpense,
   getHouseCategories,
-} from '../../lib/api/household';
+} from '../../lib/api/household'
 
 const HouseholdExpensesData = ({ move }) => {
   const { data: cat, isLoading } = useQuery(
     'categoriesHousehold',
     getHouseCategories
-  );
-  const { data: total } = useQuery('totalHousehold', getHouseTotalExpenses);
-  const { data: largest, isLoading: stillLoading, isError: largestError } = useQuery(
-    'largestHoushold',
-    getHouseLargestExpense
-  );
+  )
+  const { data: total } = useQuery('totalHousehold', getHouseTotalExpenses)
+  const {
+    data: largest,
+    isLoading: stillLoading,
+    isError: largestError,
+  } = useQuery('largestHoushold', getHouseLargestExpense)
 
   const moveBack = () => {
     window.scroll({
       top: 0,
       left: 0,
       behavior: 'smooth',
-    });
-  };
+    })
+  }
 
-  if (stillLoading) return <p>Loading...</p>;
+  if (stillLoading) return <p>Loading...</p>
   if (largestError) return <p>No data available for this month yet</p>
-  
-  
 
   return (
     <>
-      <span onClick={moveBack} className=" mt-10 transform hover:scale-150">
+      <span
+        onClick={moveBack}
+        className=" mt-10 transform hover:scale-150 cursor-pointer"
+      >
         {doubleChevUp}
       </span>
       <div>
@@ -83,7 +85,7 @@ const HouseholdExpensesData = ({ move }) => {
         )}
       </div>
     </>
-  );
-};
+  )
+}
 
-export default HouseholdExpensesData;
+export default HouseholdExpensesData

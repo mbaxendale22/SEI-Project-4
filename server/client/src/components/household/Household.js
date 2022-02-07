@@ -1,12 +1,12 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { useQueryClient } from 'react-query';
-import { doubleChevDown } from '../../assets/doublechev';
-import HouseholdTransactions from './HouseholdTransactions';
+import React from 'react'
+import { Link } from 'react-router-dom'
+import { useQueryClient } from 'react-query'
+import { doubleChevDown } from '../../assets/doublechev'
+import HouseholdTransactions from './HouseholdTransactions'
 
 const Household = ({ user, move }) => {
-  const queryClient = useQueryClient();
-  const householdInfo = queryClient.getQueryData(['householdInfo', user.id]);
+  const queryClient = useQueryClient()
+  const householdInfo = queryClient.getQueryData(['householdInfo', user.id])
 
   return (
     <>
@@ -19,7 +19,10 @@ const Household = ({ user, move }) => {
             <HouseholdTransactions householdInfo={householdInfo} />
           </div>
           <p>See An Overview of This Month's Expenses</p>
-          <span onClick={move} className="transform hover:scale-150">
+          <span
+            onClick={move}
+            className="transform hover:scale-150 cursor-pointer"
+          >
             {doubleChevDown}
           </span>
         </div>
@@ -36,7 +39,7 @@ const Household = ({ user, move }) => {
         </div>
       )}
     </>
-  );
-};
+  )
+}
 
-export default Household;
+export default Household
